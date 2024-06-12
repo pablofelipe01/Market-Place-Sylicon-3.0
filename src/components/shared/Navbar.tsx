@@ -67,7 +67,18 @@ export function Navbar() {
           {account && wallet ? (
             <ProfileButton address={account.address} wallet={wallet} />
           ) : (
-            <ConnectButton client={client} connectModal={{ size: "compact" }} theme={"dark"} />
+            // <ConnectButton client={client} connectModal={{ size: "compact" }} theme={"dark"} />
+            <ConnectButton
+        client={client}
+        
+        theme={"dark"}
+        connectModal={{
+          size: "compact",
+          titleIcon:
+            "https://tokensolutions.mypinata.cloud/ipfs/QmcRP5jHyv2QfBk7kZGzLv68SL3sP4jhKELhdcX7JhKx4Y",
+          showThirdwebBranding: false,
+        }}
+      />
           )}
         </Box>
       </Flex>
