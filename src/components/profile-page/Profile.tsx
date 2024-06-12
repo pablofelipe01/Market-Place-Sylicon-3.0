@@ -94,7 +94,7 @@ export function ProfileSection(props: Props) {
     : [];
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 2, lg: 2, xl: 4 });
   return (
-    <Box px={{ lg: "50px", base: "20px" }}>
+    <Box px={{ lg: "50px", base: "20px" }} mt="80px" pt="24px">
       <Flex direction={{ lg: "row", md: "column", sm: "column" }} gap={5}>
         <Img
           src={ensAvatar ?? blo(address as `0x${string}`)}
@@ -102,7 +102,8 @@ export function ProfileSection(props: Props) {
           rounded="8px"
         />
         <Box my="auto">
-          <Heading>{ensName ?? "Unnamed"}</Heading>
+          
+          {/* <Heading>{ensName ?? "Unnamed"}aqui se puede poner el Nombre etc</Heading> */ } 
           <Text color="gray">{shortenAddress(address)}</Text>
         </Box>
       </Flex>
@@ -136,10 +137,10 @@ export function ProfileSection(props: Props) {
                   href={`/collection/${selectedCollection.chain.id}/${selectedCollection.address}`}
                   color="gray"
                 >
-                  View collection <ExternalLinkIcon mx="2px" />
+                  Ver Inmueble <ExternalLinkIcon mx="2px" />
                 </Link>
               </Flex>
-              <SimpleGrid columns={columns} spacing={4} p={4}>
+              <SimpleGrid columns={columns} spacing={6} p={4}>
                 {tabIndex === 0 ? (
                   <>
                     {data && data.length > 0 ? (
@@ -173,7 +174,11 @@ export function ProfileSection(props: Props) {
                         {listings?.map((item) => (
                           <Box
                             key={item.id}
-                            rounded="12px"
+                            rounded="md"
+                            border="1px solid"
+                            borderColor="gray.200"
+                            boxShadow="md"
+                            overflow="hidden"
                             as={Link}
                             href={`/collection/${contract.chain.id}/${
                               contract.address
@@ -185,15 +190,18 @@ export function ProfileSection(props: Props) {
                               <MediaRenderer
                                 client={client}
                                 src={item.asset.metadata.image}
+                                style={{ width: "100%", height: "250px", objectFit: "cover" }}
                               />
-                              <Text mt="12px">
-                                {item.asset?.metadata?.name ?? "Unknown item"}
-                              </Text>
-                              <Text>Price</Text>
-                              <Text>
-                                {toEther(item.pricePerToken)}{" "}
-                                {item.currencyValuePerToken.symbol}
-                              </Text>
+                              <Box p="4">
+                                <Text mt="12px" fontSize="lg" fontWeight="bold">
+                                  {item.asset?.metadata?.name ?? "Unknown item"}
+                                </Text>
+                                <Text>Price</Text>
+                                <Text>
+                                  {toEther(item.pricePerToken)}{" "}
+                                  {item.currencyValuePerToken.symbol}
+                                </Text>
+                              </Box>
                             </Flex>
                           </Box>
                         ))}

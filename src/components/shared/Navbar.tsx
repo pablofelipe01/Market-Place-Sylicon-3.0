@@ -15,6 +15,14 @@ import {
   MenuList,
   Image,
   useColorMode,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { blo } from "blo";
 import { FaRegMoon } from "react-icons/fa";
@@ -32,27 +40,34 @@ export function Navbar() {
   const account = useActiveAccount();
   const wallet = useActiveWallet();
   return (
-    <Box py="30px" px={{ base: "20px", lg: "50px" }}>
+    <Box
+      py="20px"
+      px={{ base: "20px", lg: "50px" }}
+      position="fixed"
+      top="0"
+      width="100%"
+      zIndex="1000"
+      bg="rgba(0, 0, 0, 0.7)"
+      backdropFilter="blur(10px)"
+      boxShadow="sm"
+    >
       <Flex direction="row" justifyContent="space-between">
         <Box my="auto">
-          <Heading
-            as={Link}
-            href="/"
-            _hover={{ textDecoration: "none" }}
-            bgGradient="linear(to-l, #7928CA, #FF0080)"
-            bgClip="text"
-            fontWeight="extrabold"
-          >
-            {/* Replace this with your own branding */}
-            THIRDMART
-          </Heading>
+          <Link href="/" _hover={{ textDecoration: "none" }}>
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              height="50px"
+              objectFit="contain"
+            />
+          </Link>
         </Box>
         <Box>
           <ToggleThemeButton />
           {account && wallet ? (
             <ProfileButton address={account.address} wallet={wallet} />
           ) : (
-            <ConnectButton client={client} />
+            <ConnectButton client={client} connectModal={{ size: "compact" }} theme={"dark"} />
           )}
         </Box>
       </Flex>
@@ -71,6 +86,8 @@ function ProfileButton({
   const { data: ensName } = useGetENSName({ address });
   const { data: ensAvatar } = useGetENSAvatar({ ensName });
   const { colorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Menu>
       <MenuButton as={Button} height="56px">
@@ -92,8 +109,9 @@ function ProfileButton({
           </Box>
         </MenuItem>
         <MenuItem as={Link} href="/profile" _hover={{ textDecoration: "none" }}>
-          Profile {ensName ? `(${ensName})` : ""}
+          Perfil {ensName ? `(${ensName})` : ""}
         </MenuItem>
+        <MenuItem onClick={onOpen}>Recargar</MenuItem>
         <MenuItem
           onClick={() => {
             if (wallet) disconnect(wallet);
@@ -102,6 +120,26 @@ function ProfileButton({
           Logout
         </MenuItem>
       </MenuList>
+
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Recargar</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <iframe
+              src="https://global.transak.com/"
+              width="100%"
+              height="600px"
+              style={{ border: "none" }}
+              title="Transak"
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={onClose}>Close</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Menu>
   );
 }

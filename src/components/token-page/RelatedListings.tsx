@@ -47,7 +47,11 @@ export default function RelatedListings({
           {listings?.map((item) => (
             <Box
               key={item.id.toString()}
-              rounded="12px"
+              rounded="md"
+              border="1px solid"
+              borderColor="gray.200"
+              boxShadow="md"
+              overflow="hidden"
               as={Link}
               href={`/collection/${nftContract.chain.id}/${
                 nftContract.address
@@ -59,13 +63,18 @@ export default function RelatedListings({
                 <MediaRenderer
                   client={client}
                   src={item.asset.metadata.image}
+                  style={{ width: "100%", height: "250px", objectFit: "cover" }}
                 />
-                <Text>{item.asset.metadata?.name ?? "Unknown item"}</Text>
-                <Text>Price</Text>
-                <Text>
-                  {toEther(item.pricePerToken)}{" "}
-                  {item.currencyValuePerToken.symbol}
-                </Text>
+                <Box p="4">
+                  <Text mt="12px" fontSize="lg" fontWeight="bold">
+                    {item.asset.metadata?.name ?? "Unknown item"}
+                  </Text>
+                  <Text>Price</Text>
+                  <Text>
+                    {toEther(item.pricePerToken)}{" "}
+                    {item.currencyValuePerToken.symbol}
+                  </Text>
+                </Box>
               </Flex>
             </Box>
           ))}

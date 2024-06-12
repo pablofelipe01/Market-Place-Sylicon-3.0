@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Providers } from "@/components/shared/Providers";
 import { Navbar } from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
+import { Box } from "@chakra-ui/react";
 
 export const metadata: Metadata = {
-  title: "Marketplace",
-  description: "",
+  title: "Sylicon",
+  description: "Tokenización y fraccionamiento: transformando el mercado inmobiliario en colombia",
 };
 
 export default function RootLayout({
@@ -14,10 +16,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body style={{ paddingBottom: "100px" }}>
+      <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh", margin: 0 }}>
         <Providers>
           <Navbar />
-          {children}
+          <Box flex="1" display="flex" flexDirection="column">
+            {children}
+          </Box>
+          <Footer />
         </Providers>
       </body>
     </html>

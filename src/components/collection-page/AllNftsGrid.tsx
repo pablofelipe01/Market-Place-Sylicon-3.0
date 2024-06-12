@@ -10,7 +10,6 @@ import {
   useBreakpointValue,
   Text,
   Button,
-  Select,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import {
@@ -56,30 +55,43 @@ export function AllNftsGrid() {
   const columns = useBreakpointValue({
     base: 1,
     sm: Math.min(len, 2),
-    md: Math.min(len, 4),
+    md: Math.min(len, 3),
     lg: Math.min(len, 4),
     xl: Math.min(len, 5),
   });
 
-  console.log({ pages, currentPageIndex, length: pages.length });
   return (
     <>
-      <SimpleGrid columns={columns} spacing={4} p={4} mx="auto" mt="20px">
+      <SimpleGrid columns={columns} spacing={6} p={4} mx="auto" mt="20px">
         {allNFTs && allNFTs.length > 0 ? (
           allNFTs.map((item) => (
             <Box
               key={item.id}
-              rounded="12px"
+              rounded="md"
+              border="1px solid"
+              borderColor="gray.200"
+              boxShadow="md"
+              overflow="hidden"
               as={Link}
               href={`/collection/${nftContract.chain.id}/${
                 nftContract.address
               }/token/${item.id.toString()}`}
               _hover={{ textDecoration: "none" }}
             >
-              <Flex direction="column">
-                <MediaRenderer client={client} src={item.metadata.image} />
-                <Text>{item.metadata?.name ?? "Unknown item"}</Text>
-              </Flex>
+              <MediaRenderer
+                client={client}
+                src={item.metadata.image}
+                style={{
+                  width: "100%",
+                  height: "250px",
+                  objectFit: "cover",
+                }}
+              />
+              <Box p="4">
+                <Text fontSize="lg" fontWeight="bold">
+                  {item.metadata?.name ?? "Unknown item"}
+                </Text>
+              </Box>
             </Box>
           ))
         ) : (
@@ -122,16 +134,6 @@ export function AllNftsGrid() {
           >
             <MdKeyboardDoubleArrowRight />
           </Button>
-          {/* <Select
-            w="80px"
-            onChange={(e) => setItemsPerPage(Number(e.target.value))}
-          >
-            {[20, 40, 60].map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </Select> */}
         </Flex>
       </Box>
     </>

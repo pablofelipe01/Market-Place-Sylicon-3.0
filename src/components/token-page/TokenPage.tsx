@@ -94,8 +94,8 @@ export function Token(props: Props) {
     nft?.owner?.toLowerCase() === account?.address.toLowerCase();
 
   return (
-    <Flex direction="column">
-      <Box mt="24px" mx="auto">
+    <Flex direction="column" mt="80px" pt="24px">
+      <Box mx="auto">
         <Flex
           direction={{ lg: "row", base: "column" }}
           justifyContent={{ lg: "center", base: "space-between" }}
@@ -105,7 +105,7 @@ export function Token(props: Props) {
             <MediaRenderer
               client={client}
               src={nft?.metadata.image}
-              style={{ width: "max-content", height: "auto", aspectRatio: "1" }}
+              style={{ width: "100%", height: "auto", aspectRatio: "1", borderRadius: "12px", border: "1px solid gray", boxShadow: "md" }}
             />
             <Accordion allowMultiple defaultIndex={[0, 1, 2]}>
               {nft?.metadata.description && (
@@ -272,23 +272,7 @@ export function Token(props: Props) {
 }
 
 function getExpiration(endTimeInSeconds: bigint) {
-  // Get the current date and time
   const currentDate = new Date();
-
-  // Convert seconds to milliseconds (bigint)
-  const milliseconds: bigint = endTimeInSeconds * 1000n;
-
-  // Calculate the future date by adding milliseconds to the current date
-  const futureDate = new Date(currentDate.getTime() + Number(milliseconds));
-
-  // Format the future date
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    timeZoneName: "short",
-  };
-  const formattedDate = futureDate.toLocaleDateString("en-US", options);
-  return formattedDate;
+  const expirationDate = new Date(Number(endTimeInSeconds) * 1000);
+  return expirationDate.toLocaleString();
 }

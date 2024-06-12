@@ -11,7 +11,11 @@ export function OwnedItem(props: {
   return (
     <>
       <Box
-        rounded="12px"
+        rounded="md"
+        border="1px solid"
+        borderColor="gray.200"
+        boxShadow="md"
+        overflow="hidden"
         as={Link}
         href={`/collection/${nftCollection.chain.id}/${
           nftCollection.address
@@ -20,8 +24,16 @@ export function OwnedItem(props: {
         w={250}
       >
         <Flex direction="column">
-          <MediaRenderer client={client} src={nft.metadata.image} />
-          <Text>{nft.metadata?.name ?? "Unknown item"}</Text>
+          <MediaRenderer
+            client={client}
+            src={nft.metadata.image}
+            style={{ width: "100%", height: "250px", objectFit: "cover" }}
+          />
+          <Box p="4">
+            <Text fontSize="lg" fontWeight="bold">
+              {nft.metadata?.name ?? "Unknown item"}
+            </Text>
+          </Box>
         </Flex>
       </Box>
     </>
