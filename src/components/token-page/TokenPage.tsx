@@ -134,7 +134,7 @@ export function Token(props: Props) {
             </Accordion>
           </Flex>
           <Box w={{ lg: "45vw", base: "90vw" }}>
-            <Text>Collection</Text>
+            <Text>Inmueble</Text>
             <Flex direction="row" gap="3">
               <Heading>{contractMetadata?.name}</Heading>
               <Link

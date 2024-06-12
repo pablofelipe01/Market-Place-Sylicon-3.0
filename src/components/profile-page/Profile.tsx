@@ -162,7 +162,7 @@ export function ProfileSection(props: Props) {
                             ? ensName
                             : shortenAddress(address)}{" "}
                           {isYou ? "do" : "does"} not own any NFT in this
-                          collection
+                          Inmueble
                         </Text>
                       </Box>
                     )}

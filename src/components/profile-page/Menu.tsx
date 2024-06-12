@@ -31,7 +31,7 @@ export function ProfileMenu(props: Props) {
           <Text>
             <AccordionButton>
               <Box as="span" flex="1" textAlign="left">
-                Collections
+                Inmuebles
               </Box>
               <AccordionIcon />
             </AccordionButton>
