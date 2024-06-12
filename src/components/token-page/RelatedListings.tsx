@@ -30,7 +30,7 @@ export default function RelatedListings({
       <Text>
         <AccordionButton>
           <Box as="span" flex="1" textAlign="left">
-            More from this collections
+            Mas de este Inmueble
           </Box>
           <AccordionIcon />
         </AccordionButton>
