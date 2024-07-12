@@ -27,7 +27,47 @@ export const NFT_CONTRACTS: NftContract[] = [
   {
     address: "0x7afb62B54d52EE104FF1C0F1Ddb54A511AE6839F",
     chain: polygon,
+    title: "SFI 401",
+    thumbnailUrl:
+      "https://tokensolutions.mypinata.cloud/ipfs/QmTkruraU7HNPt11Jt5WBR28ocpMA73ec2s7BRiYt4ytdG",
+    type: "ERC721",
+  },
+  {
+    address: "0x7afb62B54d52EE104FF1C0F1Ddb54A511AE6839F",
+    chain: polygon,
     title: "Popsy",
+    thumbnailUrl:
+      "https://tokensolutions.mypinata.cloud/ipfs/QmTkruraU7HNPt11Jt5WBR28ocpMA73ec2s7BRiYt4ytdG",
+    type: "ERC721",
+  },
+  {
+    address: "0x7afb62B54d52EE104FF1C0F1Ddb54A511AE6839F",
+    chain: polygon,
+    title: "Piso quinto",
+    thumbnailUrl:
+      "https://tokensolutions.mypinata.cloud/ipfs/QmTkruraU7HNPt11Jt5WBR28ocpMA73ec2s7BRiYt4ytdG",
+    type: "ERC721",
+  },
+  {
+    address: "0x7afb62B54d52EE104FF1C0F1Ddb54A511AE6839F",
+    chain: polygon,
+    title: "Zona Franca",
+    thumbnailUrl:
+      "https://tokensolutions.mypinata.cloud/ipfs/QmTkruraU7HNPt11Jt5WBR28ocpMA73ec2s7BRiYt4ytdG",
+    type: "ERC721",
+  },
+  {
+    address: "0x7afb62B54d52EE104FF1C0F1Ddb54A511AE6839F",
+    chain: polygon,
+    title: "Logic II",
+    thumbnailUrl:
+      "https://tokensolutions.mypinata.cloud/ipfs/QmTkruraU7HNPt11Jt5WBR28ocpMA73ec2s7BRiYt4ytdG",
+    type: "ERC721",
+  },
+  {
+    address: "0x7afb62B54d52EE104FF1C0F1Ddb54A511AE6839F",
+    chain: polygon,
+    title: "Grupo Capital",
     thumbnailUrl:
       "https://tokensolutions.mypinata.cloud/ipfs/QmTkruraU7HNPt11Jt5WBR28ocpMA73ec2s7BRiYt4ytdG",
     type: "ERC721",

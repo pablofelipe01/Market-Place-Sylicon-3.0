@@ -272,7 +272,7 @@ export function Token(props: Props) {
 }
 
 function getExpiration(endTimeInSeconds: bigint) {
-  const currentDate = new Date();
   const expirationDate = new Date(Number(endTimeInSeconds) * 1000);
-  return expirationDate.toLocaleString();
+  const options = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, month: '2-digit', day: '2-digit', year: 'numeric' };
+  return expirationDate.toLocaleString('en-US', options);
 }

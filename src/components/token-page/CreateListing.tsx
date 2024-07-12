@@ -1,34 +1,13 @@
-import { NATIVE_TOKEN_ICON_MAP, Token } from "@/consts/supported_tokens";
 import { useMarketplaceContext } from "@/hooks/useMarketplaceContext";
-import { CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import {
-  Button,
-  Flex,
-  Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-  Image,
-  useToast,
-  Box,
-} from "@chakra-ui/react";
+import { Button, Flex, Input, Menu, MenuButton, MenuItem, MenuList, Text, Image, useToast, Box } from "@chakra-ui/react";
 import { useRef, useState } from "react";
 import { NATIVE_TOKEN_ADDRESS, sendAndConfirmTransaction } from "thirdweb";
-import {
-  isApprovedForAll as isApprovedForAll1155,
-  setApprovalForAll as setApprovalForAll1155,
-} from "thirdweb/extensions/erc1155";
-import {
-  isApprovedForAll as isApprovedForAll721,
-  setApprovalForAll as setApprovalForAll721,
-} from "thirdweb/extensions/erc721";
+import { isApprovedForAll as isApprovedForAll1155, setApprovalForAll as setApprovalForAll1155 } from "thirdweb/extensions/erc1155";
+import { isApprovedForAll as isApprovedForAll721, setApprovalForAll as setApprovalForAll721 } from "thirdweb/extensions/erc721";
 import { createListing } from "thirdweb/extensions/marketplace";
-import {
-  useActiveWalletChain,
-  useSwitchActiveWalletChain,
-} from "thirdweb/react";
+import { useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
+import { CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { NATIVE_TOKEN_ICON_MAP, Token } from "@/consts/supported_tokens";
 import type { Account } from "thirdweb/wallets";
 
 type Props = {
@@ -45,13 +24,7 @@ export function CreateListing(props: Props) {
   const [currency, setCurrency] = useState<Token>();
   const toast = useToast();
 
-  const {
-    nftContract,
-    marketplaceContract,
-    refetchAllListings,
-    type,
-    supportedTokens,
-  } = useMarketplaceContext();
+  const { nftContract, marketplaceContract, refetchAllListings, type, supportedTokens } = useMarketplaceContext();
   const chain = marketplaceContract.chain;
 
   const nativeToken: Token = {
@@ -62,56 +35,54 @@ export function CreateListing(props: Props) {
 
   const options: Token[] = [nativeToken].concat(supportedTokens);
 
+  const getTodayEndTimeEST = () => {
+    const now = new Date();
+    
+    // Get the current date in the EST timezone
+    const nowInEST = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+  
+    // Set the time to the end of the day in EST
+    nowInEST.setHours(23, 59, 59, 999);
+    
+    // Convert to timestamp in seconds
+    const endTime = Math.floor(nowInEST.getTime() / 1000);
+    
+    console.log('Current Time:', now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    console.log('End of Day Time:', nowInEST.toLocaleString('en-US', { timeZone: 'America/New_York' }));
+    console.log('End Time in Seconds:', endTime);
+    
+    return endTime;
+  };
+  
+  
   return (
     <>
       <br />
       <Flex direction="column" w={{ base: "90vw", lg: "430px" }} gap="10px">
         {type === "ERC1155" ? (
           <>
-            <Flex
-              direction="row"
-              flexWrap="wrap"
-              justifyContent="space-between"
-            >
+            <Flex direction="row" flexWrap="wrap" justifyContent="space-between">
               <Box>
                 <Text>Price</Text>
-                <Input
-                  type="number"
-                  ref={priceRef}
-                  placeholder="Enter a price"
-                />
+                <Input type="number" ref={priceRef} placeholder="Enter a price" />
               </Box>
               <Box>
                 <Text>Quantity</Text>
-                <Input
-                  type="number"
-                  ref={qtyRef}
-                  defaultValue={1}
-                  placeholder="Quantity to sell"
-                />
+                <Input type="number" ref={qtyRef} defaultValue={1} placeholder="Quantity to sell" />
               </Box>
             </Flex>
           </>
         ) : (
           <>
             <Text>Price</Text>
-            <Input
-              type="number"
-              ref={priceRef}
-              placeholder="Enter a price for your listing"
-            />
+            <Input type="number" ref={priceRef} placeholder="Enter a price for your listing" />
           </>
         )}
         <Menu>
           <MenuButton minH="48px" as={Button} rightIcon={<ChevronDownIcon />}>
             {currency ? (
               <Flex direction="row">
-                <Image
-                  boxSize="2rem"
-                  borderRadius="full"
-                  src={currency.icon}
-                  mr="12px"
-                />
+                <Image boxSize="2rem" borderRadius="full" src={currency.icon} mr="12px" />
                 <Text my="auto">{currency.symbol}</Text>
               </Flex>
             ) : (
@@ -127,18 +98,9 @@ export function CreateListing(props: Props) {
                 display={"flex"}
                 flexDir={"row"}
               >
-                <Image
-                  boxSize="2rem"
-                  borderRadius="full"
-                  src={token.icon}
-                  ml="2px"
-                  mr="14px"
-                />
+                <Image boxSize="2rem" borderRadius="full" src={token.icon} ml="2px" mr="14px" />
                 <Text my="auto">{token.symbol}</Text>
-                {token.tokenAddress.toLowerCase() ===
-                  currency?.tokenAddress.toLowerCase() && (
-                  <CheckIcon ml="auto" />
-                )}
+                {token.tokenAddress.toLowerCase() === currency?.tokenAddress.toLowerCase() && <CheckIcon ml="auto" />}
               </MenuItem>
             ))}
           </MenuList>
@@ -180,8 +142,7 @@ export function CreateListing(props: Props) {
             }
 
             // Check for approval
-            const checkApprove =
-              type === "ERC1155" ? isApprovedForAll1155 : isApprovedForAll721;
+            const checkApprove = type === "ERC1155" ? isApprovedForAll1155 : isApprovedForAll721;
 
             const isApproved = await checkApprove({
               contract: nftContract,
@@ -190,10 +151,7 @@ export function CreateListing(props: Props) {
             });
 
             if (!isApproved) {
-              const setApproval =
-                type === "ERC1155"
-                  ? setApprovalForAll1155
-                  : setApprovalForAll721;
+              const setApproval = type === "ERC1155" ? setApprovalForAll1155 : setApprovalForAll721;
 
               const approveTx = setApproval({
                 contract: nftContract,
@@ -214,6 +172,7 @@ export function CreateListing(props: Props) {
               quantity: type === "ERC721" ? 1n : _qty,
               currencyContractAddress: currency?.tokenAddress,
               pricePerToken: value,
+              endTimeInSeconds: BigInt(getTodayEndTimeEST()), // Setting the end time to today's end time in EST
             });
 
             await sendAndConfirmTransaction({
@@ -229,3 +188,4 @@ export function CreateListing(props: Props) {
     </>
   );
 }
+

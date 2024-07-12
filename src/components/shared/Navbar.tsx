@@ -1,6 +1,7 @@
 "use client";
 
 import { client } from "@/consts/client";
+import { polygon } from "thirdweb/chains";
 import { useGetENSAvatar } from "@/hooks/useGetENSAvatar";
 import { useGetENSName } from "@/hooks/useGetENSName";
 import { Link } from "@chakra-ui/next-js";
@@ -70,13 +71,16 @@ export function Navbar() {
             // <ConnectButton client={client} connectModal={{ size: "compact" }} theme={"dark"} />
             <ConnectButton
         client={client}
+        // accountAbstraction={{
+        //   chain: polygon,
+        //   factoryAddress: "0xdD1d58585d1B760636dBa0411b20b55ED0A069f7",
+        //   gasless: true,
+        // }}
         
         theme={"dark"}
         connectModal={{
           size: "compact",
-          titleIcon:
-            "https://tokensolutions.mypinata.cloud/ipfs/QmcRP5jHyv2QfBk7kZGzLv68SL3sP4jhKELhdcX7JhKx4Y",
-          showThirdwebBranding: false,
+         
         }}
       />
           )}
