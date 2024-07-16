@@ -44,7 +44,7 @@ export default function CancelListingButton(props: Props) {
         refetchAllListings();
       }}
     >
-      Cancel
+      Retirar de la venta
     </Button>
   );
 }

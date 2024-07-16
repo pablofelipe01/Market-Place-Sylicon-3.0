@@ -1,6 +1,8 @@
 "use client";
 
 import { client } from "@/consts/client";
+import { chain } from "@/consts/chains";
+
 import { polygon } from "thirdweb/chains";
 import { useGetENSAvatar } from "@/hooks/useGetENSAvatar";
 import { useGetENSName } from "@/hooks/useGetENSName";
@@ -35,11 +37,19 @@ import {
   useActiveWallet,
   useDisconnect,
 } from "thirdweb/react";
+
 import type { Wallet } from "thirdweb/wallets";
+
+
+
 
 export function Navbar() {
   const account = useActiveAccount();
   const wallet = useActiveWallet();
+
+  
+  
+
   return (
     <Box
       py="20px"
@@ -68,21 +78,21 @@ export function Navbar() {
           {account && wallet ? (
             <ProfileButton address={account.address} wallet={wallet} />
           ) : (
-            // <ConnectButton client={client} connectModal={{ size: "compact" }} theme={"dark"} />
-            <ConnectButton
-        client={client}
-        // accountAbstraction={{
-        //   chain: polygon,
-        //   factoryAddress: "0xdD1d58585d1B760636dBa0411b20b55ED0A069f7",
-        //   gasless: true,
-        // }}
+            <ConnectButton client={client}  chain={chain}  connectModal={{ size: "compact" }} theme={"dark"} />
+      //       <ConnectButton
+      //   client={client}
+      //   // accountAbstraction={{
+      //   //   chain: polygon,
+      //   //   factoryAddress: "0xdD1d58585d1B760636dBa0411b20b55ED0A069f7",
+      //   //   gasless: true,
+      //   // }}
         
-        theme={"dark"}
-        connectModal={{
-          size: "compact",
+      //   theme={"dark"}
+      //   connectModal={{
+      //     size: "compact",
          
-        }}
-      />
+      //   }}
+      // />
           )}
         </Box>
       </Flex>

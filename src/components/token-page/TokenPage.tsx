@@ -113,7 +113,7 @@ export function Token(props: Props) {
                   <Text>
                     <AccordionButton>
                       <Box as="span" flex="1" textAlign="left">
-                        Description
+                        Descripción
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>
@@ -152,14 +152,14 @@ export function Token(props: Props) {
               <>
                 {account && ownedQuantity1155 && (
                   <>
-                    <Text>You own</Text>
+                    <Text>En su billetera</Text>
                     <Heading>{ownedQuantity1155.toString()}</Heading>
                   </>
                 )}
               </>
             ) : (
               <>
-                <Text>Current owner</Text>
+                <Text>Dueño Actual</Text>
                 <Flex direction="row">
                   <Heading>
                     {nft?.owner ? shortenAddress(nft.owner) : "N/A"}{" "}
@@ -183,7 +183,7 @@ export function Token(props: Props) {
                 <Text>
                   <AccordionButton>
                     <Box as="span" flex="1" textAlign="left">
-                      Listings ({listings.length})
+                      En Venta ({listings.length})
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -197,10 +197,10 @@ export function Token(props: Props) {
                       >
                         <Thead>
                           <Tr>
-                            <Th>Price</Th>
+                            <Th>Precio</Th>
                             {type === "ERC1155" && <Th px={1}>Qty</Th>}
-                            <Th>Expiration</Th>
-                            <Th px={1}>From</Th>
+                            <Th>Vence</Th>
+                            <Th px={1}>Vende:</Th>
                             <Th>{""}</Th>
                           </Tr>
                         </Thead>
@@ -257,7 +257,7 @@ export function Token(props: Props) {
                       </Table>
                     </TableContainer>
                   ) : (
-                    <Text>This item is not listed for sale</Text>
+                    <Text>Este Token no esta listado para la venta</Text>
                   )}
                 </AccordionPanel>
               </AccordionItem>

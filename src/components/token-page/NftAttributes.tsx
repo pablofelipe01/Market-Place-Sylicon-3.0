@@ -26,7 +26,7 @@ export function NftAttributes({
       <Text>
         <AccordionButton>
           <Box as="span" flex="1" textAlign="left">
-            Traits
+            Data Inmueble
           </Box>
           <AccordionIcon />
         </AccordionButton>

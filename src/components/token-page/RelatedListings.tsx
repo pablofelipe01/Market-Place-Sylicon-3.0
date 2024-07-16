@@ -10,8 +10,8 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import { toEther } from "thirdweb";
 import { MediaRenderer } from "thirdweb/react";
+import { formatTokenAmount } from "@/utils/formatTokenAmount";  // Adjust the import path as needed
 
 export default function RelatedListings({
   excludedListingId,
@@ -25,6 +25,7 @@ export default function RelatedListings({
       o.assetContractAddress.toLowerCase() === nftContract.address.toLowerCase()
   );
   if (!listings || !listings.length) return <></>;
+
   return (
     <AccordionItem>
       <Text>
@@ -71,7 +72,7 @@ export default function RelatedListings({
                   </Text>
                   <Text>Price</Text>
                   <Text>
-                    {toEther(item.pricePerToken)}{" "}
+                    {formatTokenAmount(item.pricePerToken, item.currencyValuePerToken.decimals)}{" "}
                     {item.currencyValuePerToken.symbol}
                   </Text>
                 </Box>

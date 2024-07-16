@@ -52,7 +52,7 @@ export function ListingGrid() {
             <Text fontSize="lg" fontWeight="bold">
               {item.asset?.metadata?.name ?? "Unknown item"}
             </Text>
-            <Text>Price</Text>
+            <Text>Precio</Text>
             <Text>
               {item.currencyValuePerToken.displayValue}{" "}
               {item.currencyValuePerToken.symbol}

@@ -15,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh", margin: 0 }}>
+    <html lang="en" style={{ height: "100%" }}>
+      <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh", height: "100%", margin: 0 }}>
         <Providers>
           <Navbar />
           <Box flex="1" display="flex" flexDirection="column">

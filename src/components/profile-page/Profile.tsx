@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { blo } from "blo";
 import { shortenAddress } from "thirdweb/utils";
-import type { Account } from "thirdweb/wallets";
 import { ProfileMenu } from "./Menu";
 import { useState } from "react";
 import { NFT_CONTRACTS, type NftContract } from "@/consts/nft_contracts";
@@ -93,6 +92,13 @@ export function ProfileSection(props: Props) {
       )
     : [];
   const columns = useBreakpointValue({ base: 1, sm: 2, md: 2, lg: 2, xl: 4 });
+
+  console.log('data:', data); // Debugging: Log the fetched data
+  console.log('error:', error); // Debugging: Log any errors
+  console.log('selectedCollection.type:', selectedCollection.type); // Debugging: Log the selected collection type
+  console.log('contract:', contract); // Debugging: Log the contract details
+  console.log('listings:', listings); // Debugging: Log the listings
+
   return (
     <Box px={{ lg: "50px", base: "20px" }} mt="80px" pt="24px">
       <Flex direction={{ lg: "row", md: "column", sm: "column" }} gap={5}>
@@ -102,8 +108,6 @@ export function ProfileSection(props: Props) {
           rounded="8px"
         />
         <Box my="auto">
-          
-          {/* <Heading>{ensName ?? "Unnamed"}aqui se puede poner el Nombre etc</Heading> */ } 
           <Text color="gray">{shortenAddress(address)}</Text>
         </Box>
       </Flex>
@@ -128,9 +132,8 @@ export function ProfileSection(props: Props) {
                   defaultIndex={0}
                 >
                   <TabList>
-                    <Tab>Owned ({data?.length})</Tab>
-                    <Tab>Listings ({listings.length || 0})</Tab>
-                    {/* <Tab>Auctions ({allAuctions?.length || 0})</Tab> */}
+                    <Tab>En Mi billetera ({data?.length || 0})</Tab>
+                    <Tab>En Venta ({listings.length || 0})</Tab>
                   </TabList>
                 </Tabs>
                 <Link
@@ -157,11 +160,11 @@ export function ProfileSection(props: Props) {
                       <Box>
                         <Text>
                           {isYou
-                            ? "You"
+                            ? "No"
                             : ensName
                             ? ensName
                             : shortenAddress(address)}{" "}
-                          {isYou ? "do" : "does"} not own any NFT in this
+                          {isYou ? " " : " "}  tiene Tokens en este
                           Inmueble
                         </Text>
                       </Box>
@@ -196,7 +199,7 @@ export function ProfileSection(props: Props) {
                                 <Text mt="12px" fontSize="lg" fontWeight="bold">
                                   {item.asset?.metadata?.name ?? "Unknown item"}
                                 </Text>
-                                <Text>Price</Text>
+                                <Text>Precio</Text>
                                 <Text>
                                   {toEther(item.pricePerToken)}{" "}
                                   {item.currencyValuePerToken.symbol}

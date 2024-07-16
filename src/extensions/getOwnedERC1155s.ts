@@ -6,46 +6,11 @@ import {
 } from "thirdweb/extensions/erc1155";
 
 export type GetERC1155sParams = {
-  /**
-   * Which tokenId to start at.
-   */
   start?: number;
-  /**
-   * The number of NFTs to retrieve. Defaults to 100
-   */
   count?: number;
-  /**
-   * The address of the wallet to get the NFTs of.
-   */
   owner: string;
-
   requestPerSec?: number;
 };
-
-/**
- * thirdweb SDK's `getOwnedNFTs` extension only works if your contract has the extension `nextTokenIdToMint`
- * This custom extension works for the contracts that don't have such method, but `nextTokenId`
- * It also allow you to set a limit on how many RPC requests should per called per second
- * @param options
- * @returns A list of NFTs (type: NFT[])
- *
- * @example
- * // Usage with React
- * const { data, error } = useReadContract(getOwnedERC1155s, {
- *	 contract,
- *	 address: "0x...",
- *   start: 0,
- *   count: 20,
- * });
- *
- * // Usage with TypeScript
- * const nfts = await getOwnedERC1155s({
- *   contract,
- *   address: "0x...",
- *   start: 0,
- *   count: 20,
- * });
- */
 
 export async function getOwnedERC1155s(
   options: BaseTransactionOptions<GetERC1155sParams>
@@ -67,6 +32,9 @@ export async function getOwnedERC1155s(
     }
     throw Error("Contract doesn't have required extension");
   });
+
+  console.log("maxId:", maxId); // Debugging: Log the maxId
+
   const owners: string[] = [];
   const tokenIds: bigint[] = [];
   for (let i = 0n; i < maxId; i++) {
@@ -79,6 +47,8 @@ export async function getOwnedERC1155s(
     owners,
     tokenIds,
   });
+
+  console.log("balances:", balances); // Debugging: Log the balances
 
   let ownedBalances = balances
     .map((b, i) => {
@@ -100,6 +70,8 @@ export async function getOwnedERC1155s(
       getNFT({ ...options, tokenId: BigInt(ob.tokenId) })
     )
   );
+
+  console.log("nfts:", nfts); // Debugging: Log the fetched NFTs
 
   return nfts.map((nft, index) => ({
     ...nft,

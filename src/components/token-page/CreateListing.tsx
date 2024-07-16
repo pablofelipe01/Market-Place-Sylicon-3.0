@@ -74,8 +74,8 @@ export function CreateListing(props: Props) {
           </>
         ) : (
           <>
-            <Text>Price</Text>
-            <Input type="number" ref={priceRef} placeholder="Enter a price for your listing" />
+            <Text>Precio</Text>
+            <Input type="number" ref={priceRef} placeholder="Precio de venta" />
           </>
         )}
         <Menu>

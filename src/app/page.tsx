@@ -4,14 +4,17 @@ import { NFT_CONTRACTS } from "@/consts/nft_contracts";
 import { Link } from "@chakra-ui/next-js";
 import {
   Box,
-  Button,
+  Card,
+  CardHeader,
   Flex,
   Heading,
+  Image,
+  Text,
 } from "@chakra-ui/react";
 
 export default function Home() {
   return (
-    <Box position="relative" height="100vh" width="100%">
+    <Box position="relative" flex="1" display="flex" flexDirection="column">
       <video
         autoPlay
         loop
@@ -28,46 +31,49 @@ export default function Home() {
       >
         <source src="/video1.mp4" type="video/mp4" />
       </video>
-      <Flex direction="column" pt="100px"> {/* Add padding to the top */}
-        <Box 
+      <Flex direction="column" pt="100px" flex="1">
+        <Box
           mt="24px"
-          m="auto"
-          bgGradient="linear(to-r, rgba(0, 0, 255, 0.1), rgba(0, 255, 0, 0.1))"
+          mx="auto"
           borderRadius="md"
           p="4"
+          zIndex={1} // Ensure the content is above the video
         >
           <Flex direction="column" gap="4">
-            <Heading ml="20px" mt="40px">
-              Inmuebles Disponibles
-            </Heading>
+            <Card border="1px" maxW="90vw" mx="auto">
+              <CardHeader>
+                <Heading size="md">Inmuebles Tokenizados </Heading>
+              </CardHeader>
+            </Card>
+
+           
+
             <Flex
               direction="row"
               wrap="wrap"
               mt="20px"
               gap="5"
               justifyContent="space-evenly"
+              zIndex={1} // Ensure the content is above the video
             >
               {NFT_CONTRACTS.map((item) => (
                 <Link
+                  _hover={{ textDecoration: "none" }}
+                  w={300}
+                  h={400}
                   key={item.address}
                   href={`/collection/${item.chain.id.toString()}/${item.address}`}
-                  _hover={{ textDecoration: "none" }}
-                  w="300px"
-                  h="50px"
                 >
-                  <Button
-                    w="100%"
-                    h="100%"
-                    bgGradient="linear(to-r, blue.500, green.500)"
-                    color="white"
+                  <Image
+                    src={item.thumbnailUrl}
                     borderRadius="md"
-                    _hover={{
-                      bgGradient: "linear(to-r, blue.600, green.600)",
-                      textDecoration: "none",
-                    }}
-                  >
+                    border="1px solid"
+                    borderColor="gray.200"
+                    boxShadow="md"
+                  />
+                  <Text fontSize="large" mt="10px" color="white"> {/* Make the text visible */}
                     {item.title}
-                  </Button>
+                  </Text>
                 </Link>
               ))}
             </Flex>

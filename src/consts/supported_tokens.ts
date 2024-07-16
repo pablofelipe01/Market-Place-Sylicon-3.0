@@ -1,5 +1,5 @@
 import type { Chain } from "thirdweb";
-import { avalancheFuji, polygon, sepolia } from "./chains";
+import { polygon } from "./chains";
 
 export type Token = {
   tokenAddress: string;
@@ -21,59 +21,30 @@ export type SupportedTokens = {
  * By default the Marketplace V3 contract supports any asset (token)
  */
 export const SUPPORTED_TOKENS: SupportedTokens[] = [
-  {
-    chain: avalancheFuji,
-    tokens: [
-      {
-        tokenAddress: "0x5425890298aed601595a70ab815c96711a31bc65",
-        symbol: "USDC",
-        icon: "/erc20-icons/usdc.png",
-      },
-      {
-        tokenAddress: "0x82dcec6aa3c8bfe2c96d40d8805ee0da15708643",
-        symbol: "USDT",
-        icon: "/erc20-icons/usdt.png",
-      },
-      // Add more ERC20 here...
-    ],
-  },
+  
 
   {
     chain: polygon,
     tokens: [
       {
-        tokenAddress: "0x41e94eb019c0762f9bfcf9fb1e58725bfb0e7582",
+        tokenAddress: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
         symbol: "USDC",
         icon: "/erc20-icons/usdc.png",
       },
       {
-        tokenAddress: "0xbcf39d8616d15fd146dd5db4a86b4f244a9bc772",
+        tokenAddress: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
         symbol: "USDT",
         icon: "/erc20-icons/usdt.png",
       },
     ],
   },
 
-  {
-    chain: sepolia,
-    tokens: [
-      {
-        tokenAddress: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
-        symbol: "USDC",
-        icon: "/erc20-icons/usdc.png",
-      },
-      {
-        tokenAddress: "0x36160274b0ed3673e67f2ca5923560a7a0c523aa",
-        symbol: "USDT",
-        icon: "/erc20-icons/usdt.png",
-      },
-    ],
-  },
+  
 ];
 
 export const NATIVE_TOKEN_ICON_MAP: { [key in Chain["id"]]: string } = {
-  1: "/native-token-icons/eth.png",
-  [sepolia.id]: "/native-token-icons/eth.png",
-  [avalancheFuji.id]: "/native-token-icons/avax.png",
+  // 1: "/native-token-icons/eth.png",
+  // [sepolia.id]: "/native-token-icons/eth.png",
+  // [avalancheFuji.id]: "/native-token-icons/avax.png",
   [polygon.id]: "/native-token-icons/matic.png",
 };
