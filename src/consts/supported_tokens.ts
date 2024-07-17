@@ -25,18 +25,18 @@ export const SUPPORTED_TOKENS: SupportedTokens[] = [
 
   {
     chain: polygon,
-    tokens: [
-      {
-        tokenAddress: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
-        symbol: "USDC",
-        icon: "/erc20-icons/usdc.png",
-      },
-      {
-        tokenAddress: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
-        symbol: "USDT",
-        icon: "/erc20-icons/usdt.png",
-      },
-    ],
+    // tokens: [
+    //   {
+    //     tokenAddress: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
+    //     symbol: "USDC",
+    //     icon: "/erc20-icons/usdc.png",
+    //   },
+    //   {
+    //     tokenAddress: "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+    //     symbol: "USDT",
+    //     icon: "/erc20-icons/usdt.png",
+    //   },
+    // ],
   },
 
   
@@ -46,5 +46,7 @@ export const NATIVE_TOKEN_ICON_MAP: { [key in Chain["id"]]: string } = {
   // 1: "/native-token-icons/eth.png",
   // [sepolia.id]: "/native-token-icons/eth.png",
   // [avalancheFuji.id]: "/native-token-icons/avax.png",
-  [polygon.id]: "/native-token-icons/matic.png",
+  [polygon.id]: "/erc20-icons/usdc.png",
 };
+
+// /native-token-icons/matic.png

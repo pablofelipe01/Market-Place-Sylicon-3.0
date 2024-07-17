@@ -1,6 +1,6 @@
 import { useMarketplaceContext } from "@/hooks/useMarketplaceContext";
-import { Button, Flex, Input, Menu, MenuButton, MenuItem, MenuList, Text, Image, useToast, Box } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { Button, Flex, Input, Menu, MenuButton, MenuItem, MenuList, Text, Image, useToast, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure } from "@chakra-ui/react";
+import { useRef, useState, useEffect } from "react";
 import { NATIVE_TOKEN_ADDRESS, sendAndConfirmTransaction } from "thirdweb";
 import { isApprovedForAll as isApprovedForAll1155, setApprovalForAll as setApprovalForAll1155 } from "thirdweb/extensions/erc1155";
 import { isApprovedForAll as isApprovedForAll721, setApprovalForAll as setApprovalForAll721 } from "thirdweb/extensions/erc721";
@@ -23,6 +23,8 @@ export function CreateListing(props: Props) {
   const activeChain = useActiveWalletChain();
   const [currency, setCurrency] = useState<Token>();
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [widgetKey, setWidgetKey] = useState(0);
 
   const { nftContract, marketplaceContract, refetchAllListings, type, supportedTokens } = useMarketplaceContext();
   const chain = marketplaceContract.chain;
@@ -53,8 +55,29 @@ export function CreateListing(props: Props) {
     
     return endTime;
   };
-  
-  
+
+  useEffect(() => {
+    if (isOpen) {
+      const script = document.createElement('script');
+      script.src = "https://www.cryptohopper.com/widgets/js/script";
+      script.async = true;
+      script.id = `cryptohopper-widget-script-${widgetKey}`;
+      document.body.appendChild(script);
+
+      return () => {
+        const scriptToRemove = document.getElementById(`cryptohopper-widget-script-${widgetKey}`);
+        if (scriptToRemove) {
+          document.body.removeChild(scriptToRemove);
+        }
+      };
+    }
+  }, [isOpen, widgetKey]);
+
+  const handleOpen = () => {
+    setWidgetKey(prevKey => prevKey + 1);
+    onOpen();
+  };
+
   return (
     <>
       <br />
@@ -63,11 +86,11 @@ export function CreateListing(props: Props) {
           <>
             <Flex direction="row" flexWrap="wrap" justifyContent="space-between">
               <Box>
-                <Text>Price</Text>
-                <Input type="number" ref={priceRef} placeholder="Enter a price" />
+                <Text>Precio</Text>
+                <Input type="number" ref={priceRef} placeholder="$" />
               </Box>
               <Box>
-                <Text>Quantity</Text>
+                <Text>Cantidad</Text>
                 <Input type="number" ref={qtyRef} defaultValue={1} placeholder="Quantity to sell" />
               </Box>
             </Flex>
@@ -86,7 +109,7 @@ export function CreateListing(props: Props) {
                 <Text my="auto">{currency.symbol}</Text>
               </Flex>
             ) : (
-              "Select currency"
+              "Moneda"
             )}
           </MenuButton>
           <MenuList>
@@ -105,6 +128,24 @@ export function CreateListing(props: Props) {
             ))}
           </MenuList>
         </Menu>
+        <Button onClick={handleOpen} colorScheme="blue">
+          Calculadora
+        </Button>
+        <Modal isOpen={isOpen} onClose={onClose} size="xl">
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Calculadora</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody key={widgetKey}>
+              <div className="cryptohopper-web-widget" data-id="6" data-coins="matic-network" data-numcoins="5" data-currency="COP" data-currency2="USD"></div>
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3} onClick={onClose}>
+                Cerrar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         <Button
           isDisabled={!currency}
           onClick={async () => {
@@ -182,10 +223,9 @@ export function CreateListing(props: Props) {
             refetchAllListings();
           }}
         >
-          List
+          Vender
         </Button>
       </Flex>
     </>
   );
 }
-
