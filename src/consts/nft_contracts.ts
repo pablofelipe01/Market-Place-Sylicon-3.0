@@ -64,14 +64,14 @@ export const NFT_CONTRACTS: NftContract[] = [
       "https://tokensolutions.mypinata.cloud/ipfs/QmfLWEcxGKEmDxCFyEZ9pfsu7o8qHdMJELMLWZrouZ1bdN",
     type: "ERC1155",
   },
-  // {
-  //   address: "0x45dc618a8cE09a745748725B2eA11A1502eE56F5",
-  //   chain: polygon,
-  //   title: "Grupo Capital",
-  //   thumbnailUrl:
-  //     "https://tokensolutions.mypinata.cloud/ipfs/QmetFNM3PULP8JASfwenYCH55jdyu2A8HS6vHnWcurGqwm",
-  //   type: "ERC1155",
-  // },
+  {
+    address: "0x45dc618a8cE09a745748725B2eA11A1502eE56F5",
+    chain: polygon,
+    title: "Grupo Capital",
+    thumbnailUrl:
+      "https://tokensolutions.mypinata.cloud/ipfs/QmetFNM3PULP8JASfwenYCH55jdyu2A8HS6vHnWcurGqwm",
+    type: "ERC1155",
+  },
   {
     address: "0x5aD16d0706b358283584E53388F450BF5C0E9074",
     chain: polygon,
