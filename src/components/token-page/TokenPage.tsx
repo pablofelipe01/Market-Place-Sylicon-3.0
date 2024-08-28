@@ -105,7 +105,7 @@ export function Token(props: Props) {
             <MediaRenderer
               client={client}
               src={nft?.metadata.image}
-              style={{ width: "100%", height: "auto", aspectRatio: "1", borderRadius: "12px", border: "1px solid gray", boxShadow: "md" }}
+              style={{ width: "100%", height: "auto", aspectRatio: "1", borderRadius: "12px", boxShadow: "md" }}
             />
             <Accordion allowMultiple defaultIndex={[0, 1, 2]}>
               {nft?.metadata.description && (
@@ -153,7 +153,7 @@ export function Token(props: Props) {
                 {account && ownedQuantity1155 && (
                   <>
                     <Text>En su billetera</Text>
-                    <Heading>{ownedQuantity1155.toString()}</Heading>
+                    <Heading>{ownedQuantity1155.toString()}</Heading> <Text>Tokens</Text>
                   </>
                 )}
               </>

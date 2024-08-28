@@ -5,10 +5,8 @@ import { useMarketplaceContext } from "@/hooks/useMarketplaceContext";
 import { Link } from "@chakra-ui/next-js";
 import {
   Box,
-  Flex,
   SimpleGrid,
   useBreakpointValue,
-  Text,
 } from "@chakra-ui/react";
 import { MediaRenderer } from "thirdweb/react";
 
@@ -24,12 +22,12 @@ export function ListingGrid() {
   });
   if (!listingsInSelectedCollection || !len) return <></>;
   return (
-    <SimpleGrid columns={columns} spacing={6} p={4} mx="auto" mt="20px">
+    <SimpleGrid columns={columns} spacing={6} p={4} mx="auto" mt="2px">
       {listingsInSelectedCollection.map((item) => (
         <Box
           key={item.id}
           rounded="md"
-          border="1px solid"
+          // border="1px solid"
           borderColor="gray.200"
           boxShadow="md"
           overflow="hidden"
@@ -44,20 +42,10 @@ export function ListingGrid() {
             src={item.asset.metadata.image}
             style={{
               width: "100%",
-              height: "250px",
+              height: "550px",
               objectFit: "cover",
             }}
           />
-          <Box p="4">
-            <Text fontSize="lg" fontWeight="bold">
-              {item.asset?.metadata?.name ?? "Unknown item"}
-            </Text>
-            <Text>Precio</Text>
-            <Text>
-              {item.currencyValuePerToken.displayValue}{" "}
-              {item.currencyValuePerToken.symbol}
-            </Text>
-          </Box>
         </Box>
       ))}
     </SimpleGrid>

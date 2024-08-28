@@ -53,7 +53,7 @@ export function ProfileMenu(props: Props) {
                     src={item.thumbnailUrl ?? ""}
                     w="40px"
                     rounded="md"
-                    border="1px solid"
+                    // border="1px solid"
                     borderColor="gray.200"
                     boxShadow="md"
                   />

@@ -38,7 +38,7 @@ export function Collection() {
   return (
     <Box mt="80px" pt="24px">
       <Flex direction="column" gap="4">
-        <MediaRenderer
+        {/* <MediaRenderer
           client={client}
           src={thumbnailImage}
           style={{
@@ -48,19 +48,8 @@ export function Collection() {
             width: "200px",
             height: "200px",
           }}
-        />
-        <Heading mx="auto">
-          {contractMetadata?.name || "Inmuebles ..."}
-        </Heading>
-        {contractMetadata?.description && (
-          <Text
-            maxW={{ lg: "500px", base: "300px" }}
-            mx="auto"
-            textAlign="center"
-          >
-            {contractMetadata.description}
-          </Text>
-        )}
+        /> */}
+       
 
         <Tabs
           variant="soft-rounded"
@@ -71,18 +60,7 @@ export function Collection() {
         >
           <TabList>
             <Tab>Listados para la venta ({listingsInSelectedCollection.length || 0})</Tab>
-            {/* <Tab>
-              All items{" "}
-              {supplyInfo
-                ? `(${(
-                    supplyInfo.endTokenId -
-                    supplyInfo.startTokenId +
-                    1n
-                  ).toString()})`
-                : ""}
-            </Tab> */}
-            {/* Support for English Auctions coming soon */}
-            {/* <Tab>Auctions ({allAuctions?.length || 0})</Tab> */}
+           
           </TabList>
         </Tabs>
       </Flex>

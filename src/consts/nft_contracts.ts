@@ -29,7 +29,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "WBC",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmaYjfyUYc4CmgHRA4fkGyfTkt17V2HTLT37B3TciAvjSG",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmW1zFVeqdoaUeDNdfUyrb3xdVnvaGVv7igc65MiGpPGab",
     type: "ERC1155",
   },
   {
@@ -37,7 +37,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Popsy",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/Qma5J4aHT2FwZxDhGpL8AF3pLUKDhmhAdWaJJ1cDoikPS4",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmSTfxe4FA9yf4NroWg4kL3mtxzCX9i1aWWuHZA4UkAg6V",
     type: "ERC1155",
   },
   {
@@ -45,7 +45,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Piso quinto",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/Qme3WiWpUyNsvoGWsrt74xxAhPZSNE5DKUk7fUHa4868QC",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmQHea3ezfjKgVdUngbfFg9dFYpjBNDM7zsM9RNi4S9Ugu",
     type: "ERC1155",
   },
   {
@@ -53,7 +53,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Zona Franca",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmZ7bTTP85ZKv3tboQqiRfFV63cH2i5DBwpcSfx76gLpvW",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmcK2gz6Yqc9E1Sr7MFq8WKMLfVZWxbLkT2iTJHcntLFoD",
     type: "ERC1155",
   },
   {
@@ -61,7 +61,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Logic II",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmfLWEcxGKEmDxCFyEZ9pfsu7o8qHdMJELMLWZrouZ1bdN",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmcetAunJnKZMu73NMspcNn2RoFSpTcBPMBwU7bAyz43QH",
     type: "ERC1155",
   },
   {
@@ -69,7 +69,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Grupo Capital",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmetFNM3PULP8JASfwenYCH55jdyu2A8HS6vHnWcurGqwm",
+      "https://tokensolutions.mypinata.cloud/ipfs/Qmay88iXLWg4LnR2XJGR5zJp8gHLcukKeahQhUjQVDwVRA",
     type: "ERC1155",
   },
   {
@@ -77,7 +77,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Test House",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmZrpXcKXLvBcG4i9ktADyc65rhNWhtrKUM8BUnQ1Lf1BN",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmSTfxe4FA9yf4NroWg4kL3mtxzCX9i1aWWuHZA4UkAg6V",
     type: "ERC1155",
   },
   

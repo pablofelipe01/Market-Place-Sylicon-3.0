@@ -67,7 +67,7 @@ export default function Home() {
                   <Image
                     src={item.thumbnailUrl}
                     borderRadius="md"
-                    border="1px solid"
+                    // border="1px solid"
                     borderColor="gray.200"
                     boxShadow="md"
                   />
