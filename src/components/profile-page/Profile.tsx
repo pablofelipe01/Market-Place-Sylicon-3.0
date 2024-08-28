@@ -211,7 +211,7 @@ export function ProfileSection(props: Props) {
                       </>
                     ) : (
                       <Box>
-                        You do not have any listing with this collection
+                        No tienes Tokens a la venta en el Inmueble
                       </Box>
                     )}
                   </>
