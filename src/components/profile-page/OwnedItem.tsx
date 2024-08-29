@@ -12,7 +12,7 @@ export function OwnedItem(props: {
     <>
       <Box
         rounded="md"
-        border="1px solid"
+        // border="1px solid"
         borderColor="gray.200"
         boxShadow="md"
         overflow="hidden"

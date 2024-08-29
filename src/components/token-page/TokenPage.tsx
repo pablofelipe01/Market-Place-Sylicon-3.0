@@ -214,7 +214,8 @@ export function Token(props: Props) {
                                 <Td>
                                   <Text>
                                     {item.currencyValuePerToken.displayValue}{" "}
-                                    {item.currencyValuePerToken.symbol}
+                                    Sylicon Matic
+                                    {/* {item.currencyValuePerToken.symbol} */}
                                   </Text>
                                 </Td>
                                 {type === "ERC1155" && (

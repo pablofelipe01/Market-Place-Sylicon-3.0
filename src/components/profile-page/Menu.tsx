@@ -58,7 +58,7 @@ export function ProfileMenu(props: Props) {
                     boxShadow="md"
                   />
                   <Box my="auto">
-                    <Text>{item.title ?? "Inmuebles ..."}</Text>
+                    <Text>{item.title}</Text>
                   </Box>
                 </Flex>
               </Box>

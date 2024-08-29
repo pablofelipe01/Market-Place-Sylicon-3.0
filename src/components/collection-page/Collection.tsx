@@ -49,7 +49,7 @@ export function Collection() {
           isLazy
         >
           <TabList>
-            <Tab>Listados para la venta ({listingsInSelectedCollection.length || 0})</Tab>
+            <Tab>Listados para la venta </Tab>
            
           </TabList>
         </Tabs>

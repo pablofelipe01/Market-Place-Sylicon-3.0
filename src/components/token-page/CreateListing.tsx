@@ -106,7 +106,7 @@ export function CreateListing(props: Props) {
             {currency ? (
               <Flex direction="row">
                 <Image boxSize="2rem" borderRadius="full" src={currency.icon} mr="12px" />
-                <Text my="auto">{currency.symbol}</Text>
+                <Text my="auto">Sylicon Matic</Text>
               </Flex>
             ) : (
               "Moneda"
@@ -122,7 +122,7 @@ export function CreateListing(props: Props) {
                 flexDir={"row"}
               >
                 <Image boxSize="2rem" borderRadius="full" src={token.icon} ml="2px" mr="14px" />
-                <Text my="auto">{token.symbol}</Text>
+                <Text my="auto">Sylicon Matic</Text>
                 {token.tokenAddress.toLowerCase() === currency?.tokenAddress.toLowerCase() && <CheckIcon ml="auto" />}
               </MenuItem>
             ))}
