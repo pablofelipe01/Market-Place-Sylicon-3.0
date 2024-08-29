@@ -36,19 +36,9 @@ export function Collection() {
     contractMetadata?.image || firstNFT?.metadata.image || "";
 
   return (
-    <Box mt="80px" pt="24px">
+    <Box mt="70px" pt="24px">
       <Flex direction="column" gap="4">
-        {/* <MediaRenderer
-          client={client}
-          src={thumbnailImage}
-          style={{
-            marginLeft: "auto",
-            marginRight: "auto",
-            borderRadius: "20px",
-            width: "200px",
-            height: "200px",
-          }}
-        /> */}
+       
        
 
         <Tabs

@@ -12,7 +12,7 @@ export default function Nosotros() {
         misión y visión.
       </Text>
       <Image
-        src="/image3.png" // Path to your image in the public folder
+        src="/image5.png" // Path to your image in the public folder
         alt="Nuestra historia"
         borderRadius="md"
         width="100%"
