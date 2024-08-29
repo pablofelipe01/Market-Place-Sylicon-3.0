@@ -199,7 +199,7 @@ export function Token(props: Props) {
                           <Tr>
                             <Th>Precio</Th>
                             {type === "ERC1155" && <Th px={1}>Qty</Th>}
-                            <Th>Vence</Th>
+                            {/* <Th>Vence</Th> */}
                             <Th px={1}>Vende:</Th>
                             <Th>{""}</Th>
                           </Tr>
@@ -223,11 +223,11 @@ export function Token(props: Props) {
                                     <Text>{item.quantity.toString()}</Text>
                                   </Td>
                                 )}
-                                <Td>
+                                {/* <Td>
                                   <Text>
                                     {getExpiration(item.endTimeInSeconds)}
                                   </Text>
-                                </Td>
+                                </Td> */}
                                 <Td px={1}>
                                   <Text>
                                     {item.creatorAddress.toLowerCase() ===
