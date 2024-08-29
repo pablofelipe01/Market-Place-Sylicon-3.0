@@ -51,7 +51,7 @@ export default function Home() {
         >
           <Flex direction="column" gap="4">
             <Card backgroundColor="transparent">
-              <CardHeader></CardHeader>
+              
               <CardBody backgroundColor="transparent">
                 <Image
                   src="/image2.png" // Path to your image in the public folder
@@ -60,7 +60,7 @@ export default function Home() {
                   height="auto"
                 />
                 <Box textAlign="center" mt="10px">
-                  
+                <CardHeader>Inmuebles Tokenizados</CardHeader>
               <IconButton
                 aria-label="Scroll down"
                 icon={<FaArrowDown />}
