@@ -2,7 +2,6 @@
 
 import { client } from "@/consts/client";
 import { chain } from "@/consts/chains";
-
 import { polygon } from "thirdweb/chains";
 import { useGetENSAvatar } from "@/hooks/useGetENSAvatar";
 import { useGetENSName } from "@/hooks/useGetENSName";
@@ -26,11 +25,20 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
+  IconButton,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  VStack,
 } from "@chakra-ui/react";
 import { blo } from "blo";
 import { FaRegMoon } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import { IoSunny } from "react-icons/io5";
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   ConnectButton,
   useActiveAccount,
@@ -40,15 +48,10 @@ import {
 
 import type { Wallet } from "thirdweb/wallets";
 
-
-
-
 export function Navbar() {
   const account = useActiveAccount();
   const wallet = useActiveWallet();
-
-  
-  
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box
@@ -62,7 +65,7 @@ export function Navbar() {
       backdropFilter="blur(10px)"
       boxShadow="sm"
     >
-      <Flex direction="row" justifyContent="space-between">
+      <Flex direction="row" justifyContent="space-between" alignItems="center">
         <Box my="auto">
           <Link href="/" _hover={{ textDecoration: "none" }}>
             <Image
@@ -73,28 +76,87 @@ export function Navbar() {
             />
           </Link>
         </Box>
-        <Box>
+
+        {/* Hamburger Menu for Mobile */}
+        <IconButton
+          aria-label="Open menu"
+          icon={<HamburgerIcon />}
+          display={{ base: "block", md: "none" }}
+          onClick={onOpen}
+          color="white"
+          bg="transparent"
+          _hover={{ bg: "transparent" }}
+        />
+
+        {/* Desktop Links */}
+        <Flex
+          align="center"
+          gap="20px"
+          display={{ base: "none", md: "flex" }}
+        >
+          <Link
+            href="/nosotros"
+            _hover={{ textDecoration: "none", color: "white" }}
+          >
+            Nosotros
+          </Link>
+          <Link
+            href="/contacto"
+            _hover={{ textDecoration: "none", color: "white" }}
+          >
+            Contacto
+          </Link>
+          <Link
+            href="/paso-a-paso"
+            _hover={{ textDecoration: "none", color: "white" }}
+          >
+            Paso a Paso
+          </Link>
           <ToggleThemeButton />
           {account && wallet ? (
             <ProfileButton address={account.address} wallet={wallet} />
           ) : (
-            <ConnectButton client={client}  chain={chain}  connectModal={{ size: "compact" }} theme={"dark"} />
-      //       <ConnectButton
-      //   client={client}
-      //   // accountAbstraction={{
-      //   //   chain: polygon,
-      //   //   factoryAddress: "0xdD1d58585d1B760636dBa0411b20b55ED0A069f7",
-      //   //   gasless: true,
-      //   // }}
-        
-      //   theme={"dark"}
-      //   connectModal={{
-      //     size: "compact",
-         
-      //   }}
-      // />
+            <ConnectButton
+              client={client}
+              chain={chain}
+              connectModal={{ size: "compact" }}
+              theme={"dark"}
+            />
           )}
-        </Box>
+        </Flex>
+
+        {/* Drawer for Mobile Menu */}
+        <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerBody>
+              <VStack align="flex-start" spacing="24px">
+                <Link href="/nosotros" onClick={onClose}>
+                  Nosotros
+                </Link>
+                <Link href="/contacto" onClick={onClose}>
+                  Contacto
+                </Link>
+                <Link href="/paso-a-paso" onClick={onClose}>
+                  Paso a Paso
+                </Link>
+                <ToggleThemeButton />
+                {account && wallet ? (
+                  <ProfileButton address={account.address} wallet={wallet} />
+                ) : (
+                  <ConnectButton
+                    client={client}
+                    chain={chain}
+                    connectModal={{ size: "compact" }}
+                    theme={"dark"}
+                  />
+                )}
+              </VStack>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
       </Flex>
     </Box>
   );

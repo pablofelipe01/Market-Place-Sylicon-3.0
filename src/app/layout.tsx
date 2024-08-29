@@ -6,7 +6,7 @@ import { Box } from "@chakra-ui/react";
 
 export const metadata: Metadata = {
   title: "Sylicon",
-  description: "Tokenización y fraccionamiento: transformando el mercado inmobiliario en colombia",
+  description: "Tokenización y fraccionamiento: transformando el mercado inmobiliario en Colombia",
 };
 
 export default function RootLayout({
@@ -19,7 +19,12 @@ export default function RootLayout({
       <body style={{ display: "flex", flexDirection: "column", minHeight: "100vh", height: "100%", margin: 0 }}>
         <Providers>
           <Navbar />
-          <Box flex="1" display="flex" flexDirection="column">
+          <Box
+            flex="1"
+            display="flex"
+            flexDirection="column"
+            mt="80px"  // Adjust this value based on your Navbar height
+          >
             {children}
           </Box>
           <Footer />

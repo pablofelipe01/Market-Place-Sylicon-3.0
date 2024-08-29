@@ -10,9 +10,19 @@ import {
   Heading,
   Image,
   Text,
+  CardBody,
+  IconButton,
 } from "@chakra-ui/react";
+import { FaArrowDown } from "react-icons/fa";
+import { useRef } from "react";
 
 export default function Home() {
+  const scrollToSectionRef = useRef<HTMLDivElement>(null);
+
+  const handleScroll = () => {
+    scrollToSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <Box position="relative" flex="1" display="flex" flexDirection="column">
       <video
@@ -40,15 +50,36 @@ export default function Home() {
           zIndex={1} // Ensure the content is above the video
         >
           <Flex direction="column" gap="4">
-            <Card border="1px" maxW="90vw" mx="auto">
-              <CardHeader>
-                <Heading size="md">Inmuebles Tokenizados </Heading>
-              </CardHeader>
+            <Card backgroundColor="transparent">
+              <CardHeader></CardHeader>
+              <CardBody backgroundColor="transparent">
+                <Image
+                  src="/image2.png" // Path to your image in the public folder
+                  alt="Sylicon Information"
+                  width="100%"
+                  height="auto"
+                />
+                <Box textAlign="center" mt="10px">
+                  
+              <IconButton
+                aria-label="Scroll down"
+                icon={<FaArrowDown />}
+                variant="ghost"
+                fontSize="2xl"
+                onClick={handleScroll}
+                color="white"
+                _hover={{ color: "gray.400" }}
+              />
+            </Box>
+              </CardBody>
             </Card>
 
-           
+            {/* Arrow Icon */}
+            
 
+            {/* The section to scroll to */}
             <Flex
+              ref={scrollToSectionRef}
               direction="row"
               wrap="wrap"
               mt="20px"
@@ -71,7 +102,7 @@ export default function Home() {
                     borderColor="gray.200"
                     boxShadow="md"
                   />
-                  <Text fontSize="large" mt="10px" color="white"> {/* Make the text visible */}
+                  <Text fontSize="large" mt="10px" color="white">
                     {item.title}
                   </Text>
                 </Link>

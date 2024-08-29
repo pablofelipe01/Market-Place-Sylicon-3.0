@@ -25,19 +25,19 @@ export const NFT_CONTRACTS: NftContract[] = [
   
   
   {
-    address: "0xdbf5D92944C9fc257ad7E010ED76389909B825e2",
-    chain: polygon,
-    // title: "WBC",
-    thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmW1zFVeqdoaUeDNdfUyrb3xdVnvaGVv7igc65MiGpPGab",
-    type: "ERC1155",
-  },
-  {
     address: "0x45CecC03c9Bec0e243faf40c658bA1A04888945C",
     chain: polygon,
     // title: "Popsy",
     thumbnailUrl:
       "https://tokensolutions.mypinata.cloud/ipfs/QmSTfxe4FA9yf4NroWg4kL3mtxzCX9i1aWWuHZA4UkAg6V",
+    type: "ERC1155",
+  },
+  {
+    address: "0xdbf5D92944C9fc257ad7E010ED76389909B825e2",
+    chain: polygon,
+    // title: "WBC",
+    thumbnailUrl:
+      "https://tokensolutions.mypinata.cloud/ipfs/QmW1zFVeqdoaUeDNdfUyrb3xdVnvaGVv7igc65MiGpPGab",
     type: "ERC1155",
   },
   {
