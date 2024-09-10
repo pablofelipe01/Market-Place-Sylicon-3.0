@@ -86,6 +86,8 @@ export function CreateListing(props: Props) {
           <>
             <Flex direction="row" flexWrap="wrap" justifyContent="space-between">
               <Box>
+                {/* <Text>Precio</Text> */}
+                {/* <br /> */}
                 <Text>Precio</Text>
                 <Input type="number" ref={priceRef} placeholder="$" />
               </Box>

@@ -120,6 +120,7 @@ export function Navbar() {
               client={client}
               chain={chain}
               connectModal={{ size: "compact" }}
+              connectButton={{ label: "Login " }}
               theme={"dark"}
             />
           )}
@@ -150,6 +151,7 @@ export function Navbar() {
                     client={client}
                     chain={chain}
                     connectModal={{ size: "compact" }}
+                    connectButton={{ label: "Login " }}
                     theme={"dark"}
                   />
                 )}

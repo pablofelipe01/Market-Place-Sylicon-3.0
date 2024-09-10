@@ -22,29 +22,29 @@ export default function Contacto() {
             boxSize="20px"
             borderRadius="full"
           />
-          <Text fontSize="lg">+57 123 456 7890</Text>
+          <Text fontSize="lg">+57 1 234 567890</Text>
         </HStack>
         <HStack>
-          <Image
+          {/* <Image
             src="https://upload.wikimedia.org/wikipedia/commons/2/21/Flag_of_Colombia.svg"
             alt="Colombian Flag"
             boxSize="20px"
             borderRadius="full"
-          />
-          <Text fontSize="lg">+57 987 654 3210</Text>
+          /> */}
+          {/* <Text fontSize="lg">+57 1 805 2141</Text> */}
         </HStack>
 
         {/* Social Networks */}
         <HStack spacing="4">
-          <Link href="https://www.facebook.com" isExternal>
+          {/* <Link href="https://www.facebook.com" isExternal>
             <FaFacebook size="24px" />
-          </Link>
-          <Link href="https://www.twitter.com" isExternal>
+          </Link> */}
+          {/* <Link href="https://www.twitter.com" isExternal>
             <FaTwitter size="24px" />
-          </Link>
-          <Link href="https://www.instagram.com" isExternal>
+          </Link> */}
+          {/* <Link href="https://www.instagram.com" isExternal>
             <FaInstagram size="24px" />
-          </Link>
+          </Link> */}
         </HStack>
 
         {/* Physical Address */}
