@@ -134,18 +134,7 @@ export function Token(props: Props) {
             </Accordion>
           </Flex>
           <Box w={{ lg: "45vw", base: "90vw" }}>
-            {/* <Text>Inmueble</Text> */}
-            {/* <Flex direction="row" gap="3">
-              <Heading>{contractMetadata?.name}</Heading>
-              <Link
-                color="gray"
-                href={`/collection/${nftContract.chain.id}/${nftContract.address}`}
-              >
-                <FaExternalLinkAlt size={20} />
-              </Link>
-            </Flex>
-            <br />
-            <Text># {nft?.id.toString()}</Text> */}
+          
             <Heading>{nft?.metadata.name}</Heading>
             <br />
             {type === "ERC1155" ? (
@@ -232,7 +221,7 @@ export function Token(props: Props) {
                                   <Text>
                                     {item.creatorAddress.toLowerCase() ===
                                     account?.address.toLowerCase()
-                                      ? "You"
+                                      ? "Usted"
                                       : shortenAddress(item.creatorAddress)}
                                   </Text>
                                 </Td>

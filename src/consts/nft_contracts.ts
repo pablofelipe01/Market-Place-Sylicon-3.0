@@ -29,7 +29,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Popsy",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmSTfxe4FA9yf4NroWg4kL3mtxzCX9i1aWWuHZA4UkAg6V",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmThMKejTcGVd8ux9gZZ3PjZ287jzBwtECAiDhv9ESHN5m",
     type: "ERC1155",
   },
   {
@@ -37,7 +37,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "WBC",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmW1zFVeqdoaUeDNdfUyrb3xdVnvaGVv7igc65MiGpPGab",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmP4xW5XBoJgPP1Hwyy4Na34Qp3TMNRnKStZga3h2LCXH4",
     type: "ERC1155",
   },
   {
@@ -45,7 +45,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Piso quinto",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmQHea3ezfjKgVdUngbfFg9dFYpjBNDM7zsM9RNi4S9Ugu",
+      "https://tokensolutions.mypinata.cloud/ipfs/Qmc5jqDBHCqtvyA6o9pE4jvqfaEFyPMTMdQxfugGAG8JJw",
     type: "ERC1155",
   },
   {
@@ -53,7 +53,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Zona Franca",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmcK2gz6Yqc9E1Sr7MFq8WKMLfVZWxbLkT2iTJHcntLFoD",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmevJqJtvKGfCJ1ZkBEcoSGrq1xoWXhSeJkxaNfzAQpZCq",
     type: "ERC1155",
   },
   {
@@ -61,7 +61,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Logic II",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmcetAunJnKZMu73NMspcNn2RoFSpTcBPMBwU7bAyz43QH",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmQPZ5xAdNdyrethQT1nsosLWz7hjPe53JzzviDhXdXaLa",
     type: "ERC1155",
   },
   {
@@ -69,7 +69,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Grupo Capital",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/Qmay88iXLWg4LnR2XJGR5zJp8gHLcukKeahQhUjQVDwVRA",
+      "https://tokensolutions.mypinata.cloud/ipfs/Qmb6W62UaHaX1B26wKWtqjVtU5UPMTLTmMKsToCR85m4Db",
     type: "ERC1155",
   },
   {

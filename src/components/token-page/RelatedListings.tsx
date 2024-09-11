@@ -9,9 +9,48 @@ import {
   Box,
   Flex,
   Text,
+  Input,
+  Button,
 } from "@chakra-ui/react";
 import { MediaRenderer } from "thirdweb/react";
-import { formatTokenAmount } from "@/utils/formatTokenAmount";  // Adjust the import path as needed
+import { formatTokenAmount } from "@/utils/formatTokenAmount";
+import { useState } from 'react';
+
+const ProfitabilityCalculator = ({ basePrice, baseProfit }) => {
+  const [customPrice, setCustomPrice] = useState('');
+  const [calculatedProfit, setCalculatedProfit] = useState(null);
+
+  const calculateProfit = () => {
+    const customPriceNumber = parseFloat(customPrice);
+    if (isNaN(customPriceNumber) || customPriceNumber <= 0) {
+      alert('Please enter a valid price');
+      return;
+    }
+    const profitRatio = baseProfit / basePrice;
+    const newProfit = (profitRatio * customPriceNumber).toFixed(2);
+    setCalculatedProfit(newProfit);
+  };
+
+  return (
+    <Box mt={4}>
+      <Text fontWeight="bold">Calcule su Rentabilidad</Text>
+      <Flex mt={2}>
+        <Input
+          placeholder="Enter custom price"
+          value={customPrice}
+          onChange={(e) => setCustomPrice(e.target.value)}
+          mr={2}
+        />
+        <Button onClick={calculateProfit}>Calcular</Button>
+      </Flex>
+      {calculatedProfit !== null && (
+        <Text mt={2}>
+          Rentabilidad anual estimada: {calculatedProfit}%
+        </Text>
+      )}
+    </Box>
+  );
+};
 
 export default function RelatedListings({
   excludedListingId,
@@ -26,8 +65,12 @@ export default function RelatedListings({
   );
   if (!listings || !listings.length) return <></>;
 
+  const basePrice = 100000;
+  const baseProfit = 8.30;
+
   return (
     <AccordionItem>
+        <ProfitabilityCalculator basePrice={basePrice} baseProfit={baseProfit} />
       <Text>
         <AccordionButton>
           <Box as="span" flex="1" textAlign="left">
@@ -73,7 +116,6 @@ export default function RelatedListings({
                   <Text>Precio</Text>
                   <Text>
                     {formatTokenAmount(item.pricePerToken, item.currencyValuePerToken.decimals)}{" Sylicon Pesos"}
-                    {/* {item.currencyValuePerToken.symbol} */}
                   </Text>
                 </Box>
               </Flex>

@@ -104,14 +104,8 @@ export function CreateListing(props: Props) {
         </Flex>
 
         {/* Calculadora is now always visible */}
-        {/* <Box mt="4">
-          <Text fontSize="lg" mb="2">Calculadora</Text>
-          <div className="cryptohopper-web-widget" data-id="6" data-coins="matic-network" data-numcoins="5" data-currency="COP" data-currency2="USD"></div>
-        </Box> */}
-        {/* Calculadora is now always visible */}
-
-            {/* Calculadora is now always visible */}
-            {/* Calculadora is now always visible */}
+       
+      
 <Box mt="4" position="relative"> {/* Container needs relative positioning */}
   <Text fontSize="lg" mb="2">Calculadora</Text>
   
