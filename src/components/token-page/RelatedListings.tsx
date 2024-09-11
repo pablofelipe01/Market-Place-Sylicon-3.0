@@ -70,10 +70,10 @@ export default function RelatedListings({
                   <Text mt="12px" fontSize="lg" fontWeight="bold">
                     {item.asset.metadata?.name ?? "Unknown item"}
                   </Text>
-                  <Text>Price</Text>
+                  <Text>Precio</Text>
                   <Text>
-                    {formatTokenAmount(item.pricePerToken, item.currencyValuePerToken.decimals)}{" "}
-                    {item.currencyValuePerToken.symbol}
+                    {formatTokenAmount(item.pricePerToken, item.currencyValuePerToken.decimals)}{" Sylicon Pesos"}
+                    {/* {item.currencyValuePerToken.symbol} */}
                   </Text>
                 </Box>
               </Flex>

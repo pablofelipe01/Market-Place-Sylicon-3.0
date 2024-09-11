@@ -214,7 +214,7 @@ export function Token(props: Props) {
                                 <Td>
                                   <Text>
                                     {item.currencyValuePerToken.displayValue}{" "}
-                                    Sylicon Matic
+                                    Sylicon Pesos
                                     {/* {item.currencyValuePerToken.symbol} */}
                                   </Text>
                                 </Td>

@@ -1,12 +1,11 @@
 import { useMarketplaceContext } from "@/hooks/useMarketplaceContext";
-import { Button, Flex, Input, Menu, MenuButton, MenuItem, MenuList, Text, Image, useToast, Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, useDisclosure } from "@chakra-ui/react";
+import { Button, Flex, Input, Text, Image, useToast, Box } from "@chakra-ui/react";
 import { useRef, useState, useEffect } from "react";
 import { NATIVE_TOKEN_ADDRESS, sendAndConfirmTransaction } from "thirdweb";
 import { isApprovedForAll as isApprovedForAll1155, setApprovalForAll as setApprovalForAll1155 } from "thirdweb/extensions/erc1155";
 import { isApprovedForAll as isApprovedForAll721, setApprovalForAll as setApprovalForAll721 } from "thirdweb/extensions/erc721";
 import { createListing } from "thirdweb/extensions/marketplace";
 import { useActiveWalletChain, useSwitchActiveWalletChain } from "thirdweb/react";
-import { CheckIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { NATIVE_TOKEN_ICON_MAP, Token } from "@/consts/supported_tokens";
 import type { Account } from "thirdweb/wallets";
 
@@ -21,61 +20,57 @@ export function CreateListing(props: Props) {
   const { tokenId, account } = props;
   const switchChain = useSwitchActiveWalletChain();
   const activeChain = useActiveWalletChain();
-  const [currency, setCurrency] = useState<Token>();
+  const [currency, setCurrency] = useState<Token | null>(null); // Set initial state for currency
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [widgetKey, setWidgetKey] = useState(0);
 
-  const { nftContract, marketplaceContract, refetchAllListings, type, supportedTokens } = useMarketplaceContext();
+  const { nftContract, marketplaceContract, refetchAllListings, type } = useMarketplaceContext();
   const chain = marketplaceContract.chain;
 
-  const nativeToken: Token = {
-    tokenAddress: NATIVE_TOKEN_ADDRESS,
-    symbol: chain.nativeCurrency?.symbol || "NATIVE TOKEN",
-    icon: NATIVE_TOKEN_ICON_MAP[chain.id] || "",
-  };
-
-  const options: Token[] = [nativeToken].concat(supportedTokens);
+  useEffect(() => {
+    // Set "Sylicon Pesos" as default currency when the component loads
+    setCurrency({
+      tokenAddress: NATIVE_TOKEN_ADDRESS,
+      symbol: chain.nativeCurrency?.symbol || "Sylicon Pesos",
+      icon: NATIVE_TOKEN_ICON_MAP[chain.id] || "/path-to-sylicon-pesos-icon.png",
+    });
+  }, [chain]);
 
   const getTodayEndTimeEST = () => {
     const now = new Date();
-    
-    // Get the current date in the EST timezone
     const nowInEST = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-  
-    // Set the time to the end of the day in EST
     nowInEST.setHours(23, 59, 59, 999);
-    
-    // Convert to timestamp in seconds
-    const endTime = Math.floor(nowInEST.getTime() / 1000);
-    
-    console.log('Current Time:', now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-    console.log('End of Day Time:', nowInEST.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-    console.log('End Time in Seconds:', endTime);
-    
-    return endTime;
+    return Math.floor(nowInEST.getTime() / 1000);
   };
 
   useEffect(() => {
-    if (isOpen) {
-      const script = document.createElement('script');
-      script.src = "https://www.cryptohopper.com/widgets/js/script";
-      script.async = true;
-      script.id = `cryptohopper-widget-script-${widgetKey}`;
-      document.body.appendChild(script);
+    const script = document.createElement('script');
+    script.src = "https://www.cryptohopper.com/widgets/js/script";
+    script.async = true;
+    script.id = `cryptohopper-widget-script-${widgetKey}`;
+    document.body.appendChild(script);
 
-      return () => {
-        const scriptToRemove = document.getElementById(`cryptohopper-widget-script-${widgetKey}`);
-        if (scriptToRemove) {
-          document.body.removeChild(scriptToRemove);
-        }
-      };
+    // Listen to calculator result events
+    window.addEventListener("cryptohopper-widget-result", handleCalculatorResult);
+
+    return () => {
+      const scriptToRemove = document.getElementById(`cryptohopper-widget-script-${widgetKey}`);
+      if (scriptToRemove) {
+        document.body.removeChild(scriptToRemove);
+      }
+
+      window.removeEventListener("cryptohopper-widget-result", handleCalculatorResult);
+    };
+  }, [widgetKey]);
+
+  // Function to handle the result from the calculator widget
+  const handleCalculatorResult = (event: any) => {
+    const calculatorResult = event.detail?.result; // Assuming the result is in event.detail.result
+    console.log("Calculator Result:", calculatorResult); // Log the result for debugging
+
+    if (priceRef.current && calculatorResult) {
+      priceRef.current.value = calculatorResult; // Set the result in the price input field
     }
-  }, [isOpen, widgetKey]);
-
-  const handleOpen = () => {
-    setWidgetKey(prevKey => prevKey + 1);
-    onOpen();
   };
 
   return (
@@ -86,14 +81,12 @@ export function CreateListing(props: Props) {
           <>
             <Flex direction="row" flexWrap="wrap" justifyContent="space-between">
               <Box>
-                {/* <Text>Precio</Text> */}
-                {/* <br /> */}
                 <Text>Precio</Text>
                 <Input type="number" ref={priceRef} placeholder="$" />
               </Box>
               <Box>
                 <Text>Cantidad</Text>
-                <Input type="number" ref={qtyRef} defaultValue={1} placeholder="Quantity to sell" />
+                <Input type="number" ref={qtyRef} defaultValue={1} placeholder="Cantidad para vender" />
               </Box>
             </Flex>
           </>
@@ -103,90 +96,73 @@ export function CreateListing(props: Props) {
             <Input type="number" ref={priceRef} placeholder="Precio de venta" />
           </>
         )}
-        <Menu>
-          <MenuButton minH="48px" as={Button} rightIcon={<ChevronDownIcon />}>
-            {currency ? (
-              <Flex direction="row">
-                <Image boxSize="2rem" borderRadius="full" src={currency.icon} mr="12px" />
-                <Text my="auto">Sylicon Matic</Text>
-              </Flex>
-            ) : (
-              "Moneda"
-            )}
-          </MenuButton>
-          <MenuList>
-            {options.map((token) => (
-              <MenuItem
-                minH="48px"
-                key={token.tokenAddress}
-                onClick={() => setCurrency(token)}
-                display={"flex"}
-                flexDir={"row"}
-              >
-                <Image boxSize="2rem" borderRadius="full" src={token.icon} ml="2px" mr="14px" />
-                <Text my="auto">Sylicon Matic</Text>
-                {token.tokenAddress.toLowerCase() === currency?.tokenAddress.toLowerCase() && <CheckIcon ml="auto" />}
-              </MenuItem>
-            ))}
-          </MenuList>
-        </Menu>
-        <Button onClick={handleOpen} colorScheme="blue">
-          Calculadora
-        </Button>
-        <Modal isOpen={isOpen} onClose={onClose} size="xl">
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Calculadora</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody key={widgetKey}>
-              <div className="cryptohopper-web-widget" data-id="6" data-coins="matic-network" data-numcoins="5" data-currency="COP" data-currency2="USD"></div>
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Cerrar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+
+        {/* Static Sylicon Pesos Display */}
+        <Flex direction="row" alignItems="center" minH="48px">
+          <Image boxSize="2rem" borderRadius="full" src={currency?.icon} mr="12px" />
+          <Text my="auto">Sylicon Pesos</Text>
+        </Flex>
+
+        {/* Calculadora is now always visible */}
+        {/* <Box mt="4">
+          <Text fontSize="lg" mb="2">Calculadora</Text>
+          <div className="cryptohopper-web-widget" data-id="6" data-coins="matic-network" data-numcoins="5" data-currency="COP" data-currency2="USD"></div>
+        </Box> */}
+        {/* Calculadora is now always visible */}
+
+            {/* Calculadora is now always visible */}
+            {/* Calculadora is now always visible */}
+<Box mt="4" position="relative"> {/* Container needs relative positioning */}
+  <Text fontSize="lg" mb="2">Calculadora</Text>
+  
+  {/* Image positioned in the top-right corner, adjusted to the left and higher */}
+  <Box position="absolute" top="-40px" right="100px" mb="10px"> {/* Adjusted top to move it higher */}
+    <Image src="/tasa.png" alt="Tasa de conversión" boxSize="100px" />
+  </Box>
+
+  {/* The actual widget */}
+  <div 
+    className="cryptohopper-web-widget" 
+    data-id="6" 
+    data-coins="matic-network" 
+    data-numcoins="5" 
+    data-currency="COP" 
+    data-currency2="USD"
+  ></div>
+</Box>
+
+
+
+
+
         <Button
-          isDisabled={!currency}
           onClick={async () => {
             const value = priceRef.current?.value;
             if (!value) {
               return toast({
-                title: "Please enter a price for this listing",
+                title: "Por favor ingresa un precio para la venta",
                 status: "error",
                 isClosable: true,
                 duration: 5000,
               });
             }
-            if (!currency) {
-              return toast({
-                title: `Please select a currency for the listing`,
-                status: "error",
-                isClosable: true,
-                duration: 5000,
-              });
-            }
+
             if (activeChain?.id !== nftContract.chain.id) {
               await switchChain(nftContract.chain);
             }
+
             const _qty = BigInt(qtyRef.current?.value ?? 1);
-            if (type === "ERC1155") {
-              if (!_qty || _qty <= 0n) {
-                return toast({
-                  title: "Error",
-                  description: "Invalid quantity",
-                  status: "error",
-                  isClosable: true,
-                  duration: 5000,
-                });
-              }
+            if (type === "ERC1155" && (_qty <= 0n)) {
+              return toast({
+                title: "Error",
+                description: "Cantidad inválida",
+                status: "error",
+                isClosable: true,
+                duration: 5000,
+              });
             }
 
-            // Check for approval
             const checkApprove = type === "ERC1155" ? isApprovedForAll1155 : isApprovedForAll721;
-
             const isApproved = await checkApprove({
               contract: nftContract,
               owner: account.address,
@@ -195,7 +171,6 @@ export function CreateListing(props: Props) {
 
             if (!isApproved) {
               const setApproval = type === "ERC1155" ? setApprovalForAll1155 : setApprovalForAll721;
-
               const approveTx = setApproval({
                 contract: nftContract,
                 operator: marketplaceContract.address,
@@ -215,7 +190,7 @@ export function CreateListing(props: Props) {
               quantity: type === "ERC721" ? 1n : _qty,
               currencyContractAddress: currency?.tokenAddress,
               pricePerToken: value,
-              endTimeInSeconds: BigInt(getTodayEndTimeEST()), // Setting the end time to today's end time in EST
+              endTimeInSeconds: BigInt(getTodayEndTimeEST()),
             });
 
             await sendAndConfirmTransaction({
