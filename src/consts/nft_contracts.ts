@@ -69,7 +69,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Grupo Capital",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/Qmb6W62UaHaX1B26wKWtqjVtU5UPMTLTmMKsToCR85m4Db",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmXZsypJACTvT19ExpjP82v6FEYyG1Rva3AE6j5XfFDNZs",
     type: "ERC1155",
   },
   {
