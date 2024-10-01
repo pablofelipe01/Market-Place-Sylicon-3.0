@@ -1,8 +1,7 @@
 "use client";
 
 import { client } from "@/consts/client";
-import { chain } from "@/consts/chains";
-import { polygon } from "thirdweb/chains";
+import { polygon } from "@/consts/chains";
 import { useGetENSAvatar } from "@/hooks/useGetENSAvatar";
 import { useGetENSName } from "@/hooks/useGetENSName";
 import { Link } from "@chakra-ui/next-js";
@@ -10,7 +9,6 @@ import {
   Box,
   Button,
   Flex,
-  Heading,
   Menu,
   MenuButton,
   MenuItem,
@@ -77,7 +75,6 @@ export function Navbar() {
           </Link>
         </Box>
 
-        {/* Hamburger Menu for Mobile */}
         <IconButton
           aria-label="Open menu"
           icon={<HamburgerIcon />}
@@ -88,7 +85,6 @@ export function Navbar() {
           _hover={{ bg: "transparent" }}
         />
 
-        {/* Desktop Links */}
         <Flex
           align="center"
           gap="20px"
@@ -118,7 +114,7 @@ export function Navbar() {
           ) : (
             <ConnectButton
               client={client}
-              chain={chain}
+              chain={polygon}
               connectModal={{ size: "compact" }}
               connectButton={{ label: "Login " }}
               theme={"dark"}
@@ -126,7 +122,6 @@ export function Navbar() {
           )}
         </Flex>
 
-        {/* Drawer for Mobile Menu */}
         <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
           <DrawerOverlay />
           <DrawerContent>
@@ -149,7 +144,7 @@ export function Navbar() {
                 ) : (
                   <ConnectButton
                     client={client}
-                    chain={chain}
+                    chain={polygon}
                     connectModal={{ size: "compact" }}
                     connectButton={{ label: "Login " }}
                     theme={"dark"}
@@ -194,7 +189,7 @@ function ProfileButton({
       <MenuList>
         <MenuItem display="flex">
           <Box mx="auto">
-            <ConnectButton client={client} theme={colorMode} />
+            <ConnectButton client={client} chain={polygon} theme={colorMode} />
           </Box>
         </MenuItem>
         <MenuItem as={Link} href="/profile" _hover={{ textDecoration: "none" }}>

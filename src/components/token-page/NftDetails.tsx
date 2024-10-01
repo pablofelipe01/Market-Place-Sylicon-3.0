@@ -46,12 +46,12 @@ export function NftDetails(props: Props) {
             {shortenAddress(nftContract.address)}
           </Link>
         </Flex>
-        <Flex direction="row" justifyContent="space-between" mb="1">
+        {/* <Flex direction="row" justifyContent="space-between" mb="1">
           <Text>Token ID</Text>
           <Link color="purple" href={tokenUrl} target="_blank">
             {nft?.id.toString()}
           </Link>
-        </Flex>
+        </Flex> */}
         <Flex direction="row" justifyContent="space-between" mb="1">
           <Text>Protocolo</Text>
           <Text>{type}</Text>

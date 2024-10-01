@@ -133,7 +133,7 @@ export function ProfileSection(props: Props) {
                 >
                   <TabList>
                     <Tab>En Mi billetera ({data?.length || 0})</Tab>
-                    <Tab>En Venta ({listings.length || 0})</Tab>
+                    <Tab>Oportunidades de Inversión disponibles ({listings.length || 0})</Tab>
                   </TabList>
                 </Tabs>
                 <Link

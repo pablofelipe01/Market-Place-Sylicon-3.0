@@ -26,17 +26,22 @@ const ProfitabilityCalculator = ({ basePrice, baseProfit }) => {
       alert('Please enter a valid price');
       return;
     }
-    const profitRatio = baseProfit / basePrice;
-    const newProfit = (profitRatio * customPriceNumber).toFixed(2);
-    setCalculatedProfit(newProfit);
+    
+    // Calculate the absolute profit amount based on the base values
+    const absoluteProfit = (baseProfit / 100) * basePrice;
+    
+    // Calculate the new profit percentage for the custom price
+    const newProfitPercentage = (absoluteProfit / customPriceNumber) * 100;
+    
+    setCalculatedProfit(newProfitPercentage.toFixed(2));
   };
 
   return (
     <Box mt={4}>
-      <Text fontWeight="bold">Calcule su Rentabilidad</Text>
+      <Text fontWeight="bold">Calcule su Rentabilidad en Pesos</Text>
       <Flex mt={2}>
         <Input
-          placeholder="Enter custom price"
+          placeholder="Ingrese Valor en Pesos"
           value={customPrice}
           onChange={(e) => setCustomPrice(e.target.value)}
           mr={2}
@@ -70,59 +75,9 @@ export default function RelatedListings({
 
   return (
     <AccordionItem>
-        <ProfitabilityCalculator basePrice={basePrice} baseProfit={baseProfit} />
-      <Text>
-        <AccordionButton>
-          <Box as="span" flex="1" textAlign="left">
-            Mas de este Inmueble
-          </Box>
-          <AccordionIcon />
-        </AccordionButton>
-      </Text>
-      <AccordionPanel pb={4}>
-        <Box
-          display="flex"
-          overflowX="auto"
-          whiteSpace="nowrap"
-          padding="4"
-          width="100%"
-          gap="15px"
-        >
-          {listings?.map((item) => (
-            <Box
-              key={item.id.toString()}
-              rounded="md"
-              border="1px solid"
-              borderColor="gray.200"
-              boxShadow="md"
-              overflow="hidden"
-              as={Link}
-              href={`/collection/${nftContract.chain.id}/${
-                nftContract.address
-              }/token/${item.asset.id.toString()}`}
-              _hover={{ textDecoration: "none" }}
-              minW={250}
-            >
-              <Flex direction="column">
-                <MediaRenderer
-                  client={client}
-                  src={item.asset.metadata.image}
-                  style={{ width: "100%", height: "250px", objectFit: "cover" }}
-                />
-                <Box p="4">
-                  <Text mt="12px" fontSize="lg" fontWeight="bold">
-                    {item.asset.metadata?.name ?? "Unknown item"}
-                  </Text>
-                  <Text>Precio</Text>
-                  <Text>
-                    {formatTokenAmount(item.pricePerToken, item.currencyValuePerToken.decimals)}{" Sylicon Pesos"}
-                  </Text>
-                </Box>
-              </Flex>
-            </Box>
-          ))}
-        </Box>
-      </AccordionPanel>
+      <ProfitabilityCalculator basePrice={basePrice} baseProfit={baseProfit} />
+    
+      <br />
     </AccordionItem>
   );
 }

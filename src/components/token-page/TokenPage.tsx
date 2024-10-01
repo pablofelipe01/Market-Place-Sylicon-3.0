@@ -1,3 +1,4 @@
+import React, { useMemo, useEffect, useState } from 'react';
 import { client } from "@/consts/client";
 import {
   Accordion,
@@ -8,7 +9,6 @@ import {
   Box,
   Flex,
   Heading,
-  Link,
   Table,
   TableContainer,
   Tbody,
@@ -18,8 +18,10 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { FaExternalLinkAlt } from "react-icons/fa";
-import { balanceOf, getNFT as getERC1155 } from "thirdweb/extensions/erc1155";
+import {
+  balanceOf,
+  getNFT as getERC1155,
+} from "thirdweb/extensions/erc1155";
 import { getNFT as getERC721 } from "thirdweb/extensions/erc721";
 import {
   MediaRenderer,
@@ -76,22 +78,75 @@ export function Token(props: Props) {
     },
   });
 
-  const listings = (listingsInSelectedCollection || []).filter(
-    (item) =>
-      item.assetContractAddress.toLowerCase() ===
-        nftContract.address.toLowerCase() && item.asset.id === BigInt(tokenId)
+  const listings = useMemo(
+    () =>
+      (listingsInSelectedCollection || []).filter(
+        (item) =>
+          item.assetContractAddress.toLowerCase() ===
+            nftContract.address.toLowerCase() && item.asset.id === BigInt(tokenId)
+      ),
+    [listingsInSelectedCollection, nftContract.address, tokenId]
   );
 
-  const auctions = (allAuctions || []).filter(
-    (item) =>
-      item.assetContractAddress.toLowerCase() ===
-        nftContract.address.toLowerCase() && item.asset.id === BigInt(tokenId)
+  const auctions = useMemo(
+    () =>
+      (allAuctions || []).filter(
+        (item) =>
+          item.assetContractAddress.toLowerCase() ===
+            nftContract.address.toLowerCase() && item.asset.id === BigInt(tokenId)
+      ),
+    [allAuctions, nftContract.address, tokenId]
   );
+
+  const averagePrice = useMemo(() => {
+    if (listings.length === 0) return null;
+    const total = listings.reduce(
+      (sum, item) => sum + Number(item.currencyValuePerToken.displayValue),
+      0
+    );
+    return (total / listings.length).toFixed(2);
+  }, [listings]);
+
+  // State to hold the exchange rate
+  const [exchangeRate, setExchangeRate] = useState<number | null>(null);
+
+  // Fetch the exchange rate when the component mounts or when averagePrice changes
+  useEffect(() => {
+    const fetchExchangeRate = async () => {
+      try {
+        const response = await fetch(
+          'https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=cop'
+        );
+        const data = await response.json();
+        const rate = data['matic-network']['cop'];
+        setExchangeRate(rate);
+      } catch (error) {
+        console.error('Error fetching exchange rate:', error);
+      }
+    };
+
+    if (averagePrice !== null) {
+      fetchExchangeRate();
+    }
+  }, [averagePrice]);
+
+  // Compute the average price in COP
+  const averagePriceInCOP = useMemo(() => {
+    if (averagePrice !== null && exchangeRate !== null) {
+      const price = parseFloat(averagePrice) * exchangeRate;
+      return new Intl.NumberFormat('es-CO', {
+        style: 'currency',
+        currency: 'COP',
+        minimumFractionDigits: 2,
+      }).format(price);
+    }
+    return null;
+  }, [averagePrice, exchangeRate]);
 
   const allLoaded = !isLoadingNFT && !isLoading && !isRefetchingAllListings;
 
   const ownedByYou =
-    nft?.owner?.toLowerCase() === account?.address.toLowerCase();
+    nft?.owner?.toLowerCase() === account?.address?.toLowerCase();
 
   return (
     <Flex direction="column" mt="80px" pt="24px">
@@ -105,7 +160,13 @@ export function Token(props: Props) {
             <MediaRenderer
               client={client}
               src={nft?.metadata.image}
-              style={{ width: "100%", height: "auto", aspectRatio: "1", borderRadius: "12px", boxShadow: "md" }}
+              style={{
+                width: "100%",
+                height: "auto",
+                aspectRatio: "1",
+                borderRadius: "12px",
+                boxShadow: "md",
+              }}
             />
             <Accordion allowMultiple defaultIndex={[0, 1, 2]}>
               {nft?.metadata.description && (
@@ -125,7 +186,6 @@ export function Token(props: Props) {
               )}
 
               {nft?.metadata?.attributes &&
-                // @ts-ignore TODO FIx later
                 nft?.metadata?.attributes.length > 0 && (
                   <NftAttributes attributes={nft.metadata.attributes} />
                 )}
@@ -134,7 +194,6 @@ export function Token(props: Props) {
             </Accordion>
           </Flex>
           <Box w={{ lg: "45vw", base: "90vw" }}>
-          
             <Heading>{nft?.metadata.name}</Heading>
             <br />
             {type === "ERC1155" ? (
@@ -142,7 +201,8 @@ export function Token(props: Props) {
                 {account && ownedQuantity1155 && (
                   <>
                     <Text>En su billetera</Text>
-                    <Heading>{ownedQuantity1155.toString()}</Heading> <Text>Tokens</Text>
+                    <Heading>{ownedQuantity1155.toString()}</Heading>{" "}
+                    <Text>Tokens</Text>
                   </>
                 )}
               </>
@@ -153,13 +213,14 @@ export function Token(props: Props) {
                   <Heading>
                     {nft?.owner ? shortenAddress(nft.owner) : "N/A"}{" "}
                   </Heading>
-                  {ownedByYou && <Text color="gray">(You)</Text>}
+                  {ownedByYou && <Text color="gray">(Usted)</Text>}
                 </Flex>
               </>
             )}
             {account &&
               nft &&
-              (ownedByYou || (ownedQuantity1155 && ownedQuantity1155 > 0n)) && (
+              (ownedByYou ||
+                (ownedQuantity1155 && ownedQuantity1155 > 0n)) && (
                 <CreateListing tokenId={nft?.id} account={account} />
               )}
             <Accordion
@@ -172,97 +233,99 @@ export function Token(props: Props) {
                 <Text>
                   <AccordionButton>
                     <Box as="span" flex="1" textAlign="left">
-                      En Venta ({listings.length})
+                    Oportunidades de Inversión disponibles ({listings.length})
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
                 </Text>
                 <AccordionPanel pb={4}>
                   {listings.length > 0 ? (
-                    <TableContainer>
-                      <Table
-                        variant="simple"
-                        sx={{ "th, td": { borderBottom: "none" } }}
-                      >
-                        <Thead>
-                          <Tr>
-                            <Th>Precio</Th>
-                            {type === "ERC1155" && <Th px={1}>Qty</Th>}
-                            {/* <Th>Vence</Th> */}
-                            <Th px={1}>Vende:</Th>
-                            <Th>{""}</Th>
-                          </Tr>
-                        </Thead>
-                        <Tbody>
-                          {listings.map((item) => {
-                            const listedByYou =
-                              item.creatorAddress.toLowerCase() ===
-                              account?.address.toLowerCase();
-                            return (
-                              <Tr key={item.id.toString()}>
-                                <Td>
-                                  <Text>
-                                    {item.currencyValuePerToken.displayValue}{" "}
-                                    Sylicon Pesos
-                                    {/* {item.currencyValuePerToken.symbol} */}
-                                  </Text>
-                                </Td>
-                                {type === "ERC1155" && (
-                                  <Td px={1}>
-                                    <Text>{item.quantity.toString()}</Text>
-                                  </Td>
-                                )}
-                                {/* <Td>
-                                  <Text>
-                                    {getExpiration(item.endTimeInSeconds)}
-                                  </Text>
-                                </Td> */}
-                                <Td px={1}>
-                                  <Text>
-                                    {item.creatorAddress.toLowerCase() ===
-                                    account?.address.toLowerCase()
-                                      ? "Usted"
-                                      : shortenAddress(item.creatorAddress)}
-                                  </Text>
-                                </Td>
-                                {account && (
+                    <>
+                      <Text fontWeight="bold" mb={2}>
+                        Precio Promedio: {averagePrice} SyliCoin
+                      </Text>
+                      {averagePriceInCOP && (
+                        <Text fontWeight="bold" mb={2}>
+                          Precio Promedio en COP: {averagePriceInCOP}
+                        </Text>
+                      )}
+                      <TableContainer>
+                        <Table
+                          variant="simple"
+                          sx={{ "th, td": { borderBottom: "none" } }}
+                        >
+                          <Thead>
+                            <Tr>
+                              <Th>Precio</Th>
+                              {type === "ERC1155" && <Th px={1}>Cantidad</Th>}
+                              <Th px={1}>Vendedor</Th>
+                              <Th>{""}</Th>
+                            </Tr>
+                          </Thead>
+                          <Tbody>
+                            {listings.map((item) => {
+                              const listedByYou =
+                                item.creatorAddress.toLowerCase() ===
+                                account?.address?.toLowerCase();
+                              return (
+                                <Tr key={item.id.toString()}>
                                   <Td>
-                                    {!listedByYou ? (
-                                      <BuyFromListingButton
-                                        account={account}
-                                        listing={item}
-                                      />
-                                    ) : (
-                                      <CancelListingButton
-                                        account={account}
-                                        listingId={item.id}
-                                      />
-                                    )}
+                                    <Text>
+                                      {
+                                        item.currencyValuePerToken.displayValue
+                                      }{" "}
+                                      SyliCoin
+                                    </Text>
                                   </Td>
-                                )}
-                              </Tr>
-                            );
-                          })}
-                        </Tbody>
-                      </Table>
-                    </TableContainer>
+                                  {type === "ERC1155" && (
+                                    <Td px={1}>
+                                      <Text>{item.quantity.toString()}</Text>
+                                    </Td>
+                                  )}
+                                  <Td px={1}>
+                                    <Text>
+                                      {listedByYou
+                                        ? "Usted"
+                                        : shortenAddress(
+                                            item.creatorAddress
+                                          )}
+                                    </Text>
+                                  </Td>
+                                  {account && (
+                                    <Td>
+                                      {!listedByYou ? (
+                                        <BuyFromListingButton
+                                          account={account}
+                                          listing={item}
+                                        />
+                                      ) : (
+                                        <CancelListingButton
+                                          account={account}
+                                          listingId={item.id}
+                                        />
+                                      )}
+                                    </Td>
+                                  )}
+                                </Tr>
+                              );
+                            })}
+                          </Tbody>
+                        </Table>
+                      </TableContainer>
+                    </>
                   ) : (
-                    <Text>Este Token no esta listado para la venta</Text>
+                    <Text>Este Token no está listado para la venta</Text>
                   )}
                 </AccordionPanel>
               </AccordionItem>
 
-              <RelatedListings excludedListingId={listings[0]?.id ?? -1n} />
+              <RelatedListings
+                excludedListingId={listings[0]?.id ?? -1n}
+              />
             </Accordion>
           </Box>
         </Flex>
       </Box>
     </Flex>
   );
-}
-
-function getExpiration(endTimeInSeconds: bigint) {
-  const expirationDate = new Date(Number(endTimeInSeconds) * 1000);
-  const options = { timeZone: 'America/New_York', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, month: '2-digit', day: '2-digit', year: 'numeric' };
-  return expirationDate.toLocaleString('en-US', options);
 }
