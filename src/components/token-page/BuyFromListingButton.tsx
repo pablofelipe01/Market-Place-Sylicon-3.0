@@ -1,6 +1,7 @@
+// src/components/BuyFromListingButton.tsx
 import { client } from "@/consts/client";
 import { useMarketplaceContext } from "@/hooks/useMarketplaceContext";
-import { Button, useToast } from "@chakra-ui/react";
+import { Button, useToast, Spinner } from "@chakra-ui/react";
 import { sendTransaction, waitForReceipt } from "thirdweb";
 import {
   buyFromListing,
@@ -10,6 +11,7 @@ import {
   useActiveWalletChain,
   useSwitchActiveWalletChain,
 } from "thirdweb/react";
+import { useState } from "react";
 import type { Account } from "thirdweb/wallets";
 
 type Props = {
@@ -24,9 +26,14 @@ export default function BuyFromListingButton(props: Props) {
   const switchChain = useSwitchActiveWalletChain();
   const activeChain = useActiveWalletChain();
   const toast = useToast();
+
+  // State to manage loading spinner
+  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <Button
       onClick={async () => {
+        setIsLoading(true); // Start loading
         if (activeChain?.id !== nftContract.chain.id) {
           await switchChain(nftContract.chain);
         }
@@ -48,7 +55,7 @@ export default function BuyFromListingButton(props: Props) {
           });
           toast({
             title:
-              "Purchase completed! The asset(s) should arrive in your account shortly",
+              "¡Compra completada! El/los activo(s) deberían llegar a tu cuenta en breve.",
             status: "success",
             duration: 4000,
             isClosable: true,
@@ -58,16 +65,29 @@ export default function BuyFromListingButton(props: Props) {
           console.error(err);
           if ((err as Error).message.startsWith("insufficient funds for gas")) {
             toast({
-              title: "You don't have enough funds for this purchase.",
-              description: `Make sure you have enough gas for the transaction + ${listing.currencyValuePerToken.displayValue} ${listing.currencyValuePerToken.symbol}`,
+              title: "No tienes suficientes fondos para esta compra.",
+              description: `Asegúrate de tener suficiente gas para la transacción + ${listing.currencyValuePerToken.displayValue} ${listing.currencyValuePerToken.symbol}`,
+              status: "error",
+              isClosable: true,
+              duration: 7000,
+            });
+          } else {
+            toast({
+              title: "Error en la compra",
+              description: (err as Error).message,
               status: "error",
               isClosable: true,
               duration: 7000,
             });
           }
+        } finally {
+          setIsLoading(false); // Stop loading
         }
       }}
+      isLoading={isLoading} // Show spinner when loading
+      loadingText="Procesando"
     >
+      {isLoading ? <Spinner size="sm" color="white" mr={2} /> : null}
       Comprar
     </Button>
   );
