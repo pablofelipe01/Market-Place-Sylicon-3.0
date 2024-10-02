@@ -100,7 +100,7 @@ export default function Home() {
                   w={300}
                   h={400}
                   key={item.address}
-                  href={`/collection/${item.chain.id.toString()}/${item.address}`}
+                  href={`/collection/${item.chain.id.toString()}/${item.address}/token/0`}
                 >
                   <Image
                     src={item.thumbnailUrl}

@@ -7,16 +7,20 @@ import {
   AccordionItem,
   AccordionPanel,
   Box,
+  Card,
+  CardBody,
   Flex,
   Heading,
+  Text,
   Table,
   TableContainer,
   Tbody,
   Td,
-  Text,
   Th,
   Thead,
   Tr,
+  Input,
+  Button,
 } from "@chakra-ui/react";
 import {
   balanceOf,
@@ -34,7 +38,7 @@ import { CreateListing } from "./CreateListing";
 import { useMarketplaceContext } from "@/hooks/useMarketplaceContext";
 import dynamic from "next/dynamic";
 import { NftDetails } from "./NftDetails";
-import RelatedListings from "./RelatedListings";
+import { Global } from "@emotion/react"; // Import for global styles
 
 const CancelListingButton = dynamic(() => import("./CancelListingButton"), {
   ssr: false,
@@ -42,6 +46,47 @@ const CancelListingButton = dynamic(() => import("./CancelListingButton"), {
 const BuyFromListingButton = dynamic(() => import("./BuyFromListingButton"), {
   ssr: false,
 });
+
+const ProfitabilityCalculator = ({ basePrice, baseProfit }) => {
+  const [customPrice, setCustomPrice] = useState('');
+  const [calculatedProfit, setCalculatedProfit] = useState(null);
+
+  const calculateProfit = () => {
+    const customPriceNumber = parseFloat(customPrice);
+    if (isNaN(customPriceNumber) || customPriceNumber <= 0) {
+      alert('Por favor, ingrese un precio válido');
+      return;
+    }
+    
+    // Calculate the absolute profit amount based on the base values
+    const absoluteProfit = (baseProfit / 100) * basePrice;
+    
+    // Calculate the new profit percentage for the custom price
+    const newProfitPercentage = (absoluteProfit / customPriceNumber) * 100;
+    
+    setCalculatedProfit(newProfitPercentage.toFixed(2));
+  };
+
+  return (
+    <Box mt={4}>
+      <Text fontWeight="bold">Calcule su Rentabilidad en Pesos</Text>
+      <Flex mt={2}>
+        <Input
+          placeholder="Ingrese Valor en Pesos"
+          value={customPrice}
+          onChange={(e) => setCustomPrice(e.target.value)}
+          mr={2}
+        />
+        <Button onClick={calculateProfit}>Calcular</Button>
+      </Flex>
+      {calculatedProfit !== null && (
+        <Text mt={2}>
+          Rentabilidad anual estimada: {calculatedProfit}%
+        </Text>
+      )}
+    </Box>
+  );
+};
 
 type Props = {
   tokenId: bigint;
@@ -148,8 +193,25 @@ export function Token(props: Props) {
   const ownedByYou =
     nft?.owner?.toLowerCase() === account?.address?.toLowerCase();
 
+  // Define basePrice and baseProfit for the ProfitabilityCalculator
+  const basePrice = 100000; // Adjust this value as needed
+  const baseProfit = 8.30;   // Adjust this value as needed
+
   return (
     <Flex direction="column" mt="80px" pt="24px">
+      <Global
+        styles={`
+          @keyframes flashing {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+          }
+          @keyframes colorChange {
+            0% { color: #48BB78; }
+            50% { color: #38A169; }
+            100% { color: #48BB78; }
+          }
+        `}
+      />
       <Box mx="auto">
         <Flex
           direction={{ lg: "row", base: "column" }}
@@ -171,7 +233,8 @@ export function Token(props: Props) {
             <Accordion allowMultiple defaultIndex={[0, 1, 2]}>
               {nft?.metadata.description && (
                 <AccordionItem>
-                  <Text>
+                  {/* You can uncomment this section if you want to display the description */}
+                  {/* <Text>
                     <AccordionButton>
                       <Box as="span" flex="1" textAlign="left">
                         Descripción
@@ -181,7 +244,7 @@ export function Token(props: Props) {
                   </Text>
                   <AccordionPanel pb={4}>
                     <Text>{nft.metadata.description}</Text>
-                  </AccordionPanel>
+                  </AccordionPanel> */}
                 </AccordionItem>
               )}
 
@@ -209,11 +272,15 @@ export function Token(props: Props) {
             ) : (
               <>
                 <Text>Dueño Actual</Text>
-                <Flex direction="row">
-                  <Heading>
+                <Flex direction="row" alignItems="center">
+                  <Heading size="md">
                     {nft?.owner ? shortenAddress(nft.owner) : "N/A"}{" "}
                   </Heading>
-                  {ownedByYou && <Text color="gray">(Usted)</Text>}
+                  {ownedByYou && (
+                    <Text color="gray" ml={2}>
+                      (Usted)
+                    </Text>
+                  )}
                 </Flex>
               </>
             )}
@@ -232,8 +299,18 @@ export function Token(props: Props) {
               <AccordionItem>
                 <Text>
                   <AccordionButton>
-                    <Box as="span" flex="1" textAlign="left">
-                    Oportunidades de Inversión disponibles ({listings.length})
+                    <Box
+                      as="span"
+                      flex="1"
+                      textAlign="center"
+                      fontSize="xl"
+                      fontWeight="extrabold"
+                      animation="flashing 1.5s infinite, colorChange 3s infinite"
+                      bgGradient="linear(to-r, green.400, green.500)"
+                      bgClip="text"
+                      textShadow="2px 2px 10px rgba(0, 0, 0, 0.5)"
+                    >
+                      Oportunidades de Inversión disponibles {listings.length}
                     </Box>
                     <AccordionIcon />
                   </AccordionButton>
@@ -241,7 +318,92 @@ export function Token(props: Props) {
                 <AccordionPanel pb={4}>
                   {listings.length > 0 ? (
                     <>
-                      <Text fontWeight="bold" mb={2}>
+                        {/* Visual Section */}
+<Box mt="20px">
+  <Flex
+    overflowX="scroll"
+    py={4}
+    px={2}
+    gap={4}
+    sx={{
+      '&::-webkit-scrollbar': {
+        height: '8px',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        background: '#ccc',
+        borderRadius: '4px',
+      },
+    }}
+  >
+    {listings.map((item) => {
+      const listedByYou =
+        item.creatorAddress.toLowerCase() ===
+        account?.address?.toLowerCase();
+      const listingMetadata = item.asset.metadata;
+      // Get attributes from metadata
+      const attributes = listingMetadata.attributes || [];
+
+      // Calculate the total offer value
+      const pricePerToken = parseFloat(item.currencyValuePerToken.displayValue);
+      const quantity = parseInt(item.quantity.toString(), 10);
+      const totalOfferValue = pricePerToken * (type === 'ERC1155' ? quantity : 1);
+
+      // Placeholder values for Rentabilidad (replace with actual logic)
+      const netProfitOffer = 'n/a';
+      const grossProfitOffer = 'n/a';
+      const netProfitValuation = 'n/a';
+
+      return (
+        <Card
+          key={item.id.toString()}
+          minW="250px"
+          maxW="250px"
+          boxShadow="md"
+          borderRadius="md"
+          overflow="hidden"
+        >
+          <MediaRenderer
+            client={client}
+            src={listingMetadata.image}
+            style={{
+              width: '100%',
+              height: '200px',
+              objectFit: 'cover',
+            }}
+          />
+          <CardBody>
+            <Text fontWeight="bold" fontSize="lg" mb={2}>
+              {listingMetadata.name}
+            </Text>
+            <Text>- Precio: {item.currencyValuePerToken.displayValue} SyliCoin</Text>
+            {type === 'ERC1155' && (
+              <Text>- Cantidad: {quantity}</Text>
+            )}
+            <Text>
+              - Vendedor: {listedByYou ? 'Usted' : shortenAddress(item.creatorAddress)}
+            </Text>
+            <Text>- Valor total de la oferta: {totalOfferValue.toFixed(2)} SyliCoin</Text>
+            <Text>- Rentabilidad Neta de la oferta: {netProfitOffer}</Text>
+            <Text>- Rentabilidad Bruta de la oferta: {grossProfitOffer}</Text>
+            <Text>- Rentabilidad Neta por Avaluó: {netProfitValuation}</Text>
+            <Flex mt={4} justifyContent="center">
+              {account &&
+                (!listedByYou ? (
+                  <BuyFromListingButton account={account} listing={item} />
+                ) : (
+                  <CancelListingButton account={account} listingId={item.id} />
+                ))}
+            </Flex>
+          </CardBody>
+        </Card>
+      );
+    })}
+  </Flex>
+</Box>
+
+                     
+                      {/* Existing Table Display */}
+                      <Text fontWeight="bold" mt={4} mb={2}>
                         Precio Promedio: {averagePrice} SyliCoin
                       </Text>
                       {averagePriceInCOP && (
@@ -249,6 +411,8 @@ export function Token(props: Props) {
                           Precio Promedio en COP: {averagePriceInCOP}
                         </Text>
                       )}
+                      {/* Include the ProfitabilityCalculator */}
+                      <ProfitabilityCalculator basePrice={basePrice} baseProfit={baseProfit} />
                       <TableContainer>
                         <Table
                           variant="simple"
@@ -256,7 +420,7 @@ export function Token(props: Props) {
                         >
                           <Thead>
                             <Tr>
-                              <Th>Precio</Th>
+                              <Th>Precio en SyliCoin</Th>
                               {type === "ERC1155" && <Th px={1}>Cantidad</Th>}
                               <Th px={1}>Vendedor</Th>
                               <Th>{""}</Th>
@@ -271,10 +435,7 @@ export function Token(props: Props) {
                                 <Tr key={item.id.toString()}>
                                   <Td>
                                     <Text>
-                                      {
-                                        item.currencyValuePerToken.displayValue
-                                      }{" "}
-                                      SyliCoin
+                                      {item.currencyValuePerToken.displayValue} SyliCoin
                                     </Text>
                                   </Td>
                                   {type === "ERC1155" && (
@@ -284,25 +445,15 @@ export function Token(props: Props) {
                                   )}
                                   <Td px={1}>
                                     <Text>
-                                      {listedByYou
-                                        ? "Usted"
-                                        : shortenAddress(
-                                            item.creatorAddress
-                                          )}
+                                      {listedByYou ? "Usted" : shortenAddress(item.creatorAddress)}
                                     </Text>
                                   </Td>
                                   {account && (
                                     <Td>
                                       {!listedByYou ? (
-                                        <BuyFromListingButton
-                                          account={account}
-                                          listing={item}
-                                        />
+                                        <BuyFromListingButton account={account} listing={item} />
                                       ) : (
-                                        <CancelListingButton
-                                          account={account}
-                                          listingId={item.id}
-                                        />
+                                        <CancelListingButton account={account} listingId={item.id} />
                                       )}
                                     </Td>
                                   )}
@@ -318,10 +469,6 @@ export function Token(props: Props) {
                   )}
                 </AccordionPanel>
               </AccordionItem>
-
-              <RelatedListings
-                excludedListingId={listings[0]?.id ?? -1n}
-              />
             </Accordion>
           </Box>
         </Flex>

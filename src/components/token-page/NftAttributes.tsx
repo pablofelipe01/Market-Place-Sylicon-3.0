@@ -25,9 +25,9 @@ export function NftAttributes({
     <AccordionItem>
       <Text>
         <AccordionButton>
-          <Box as="span" flex="1" textAlign="left">
+          {/* <Box as="span" flex="1" textAlign="left">
             Data Inmueble
-          </Box>
+          </Box> */}
           <AccordionIcon />
         </AccordionButton>
       </Text>

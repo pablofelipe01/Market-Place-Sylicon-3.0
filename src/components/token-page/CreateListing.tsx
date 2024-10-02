@@ -79,8 +79,8 @@ export function CreateListing(props: Props) {
           <>
             <Flex direction="row" flexWrap="wrap" justifyContent="space-between">
               <Box>
-                <Text>Precio</Text>
-                <Input type="number" ref={priceRef} placeholder="$" />
+                <Text>Precio en SyliCoin</Text>
+                <Input type="number" ref={priceRef} placeholder="$ Sylicoin" />
               </Box>
               <Box>
                 <Text>Cantidad</Text>
@@ -95,13 +95,13 @@ export function CreateListing(props: Props) {
           </>
         )}
 
-        <Flex direction="row" alignItems="center" minH="48px">
+        {/* <Flex direction="row" alignItems="center" minH="48px">
           <Image boxSize="2rem" borderRadius="full" src={currency?.icon} mr="12px" />
           <Text my="auto">SyliCoin</Text>
-        </Flex>
+        </Flex> */}
 
         <Box mt="4" position="relative">
-          <Text fontSize="lg" mb="2">Calculadora</Text>
+          <Text fontSize="lg" mb="2">Calculadora:   1 SyliCoin = 1 Matic</Text>
           
           <Box position="absolute" top="-40px" right="100px" mb="10px">
             {/* <Image src="/tasa.png" alt="Tasa de conversión" boxSize="100px" /> */}
