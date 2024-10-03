@@ -319,6 +319,8 @@ export function Token(props: Props) {
                   {listings.length > 0 ? (
                     <>
                         {/* Visual Section */}
+                        
+{/* Visual Section */}
 <Box mt="20px">
   <Flex
     overflowX="scroll"
@@ -335,13 +337,11 @@ export function Token(props: Props) {
       },
     }}
   >
-    {listings.map((item) => {
+    {listings.map((item, index) => {
       const listedByYou =
         item.creatorAddress.toLowerCase() ===
         account?.address?.toLowerCase();
       const listingMetadata = item.asset.metadata;
-      // Get attributes from metadata
-      const attributes = listingMetadata.attributes || [];
 
       // Calculate the total offer value
       const pricePerToken = parseFloat(item.currencyValuePerToken.displayValue);
@@ -353,14 +353,28 @@ export function Token(props: Props) {
       const grossProfitOffer = 'n/a';
       const netProfitValuation = 'n/a';
 
+      // Define text items and their labels
+      const textItems = [
+        `- Precio por Token: ${item.currencyValuePerToken.displayValue} SyliCoin`,
+        type === 'ERC1155' ? `- Cantidad de Tokens: ${quantity}` : null,
+        `- Vendedor: ${listedByYou ? 'Usted' : shortenAddress(item.creatorAddress)}`,
+        `- Valor total de la oferta: ${totalOfferValue.toFixed(2)} SyliCoin`,
+        `- Rentabilidad Neta de la oferta: ${netProfitOffer}`,
+        `- Rentabilidad Bruta de la oferta: ${grossProfitOffer}`,
+        `- Rentabilidad Neta por Avaluó: ${netProfitValuation}`,
+      ].filter(Boolean); // Remove null items
+
       return (
         <Card
           key={item.id.toString()}
           minW="250px"
           maxW="250px"
-          boxShadow="md"
-          borderRadius="md"
+          boxShadow="xl"
+          borderRadius="lg"
+          border="0.5px solid white" 
           overflow="hidden"
+          bg="rgba(1, 9, 44, 0.397)" 
+          _hover={{ boxShadow: '2xl' }}
         >
           <MediaRenderer
             client={client}
@@ -372,20 +386,18 @@ export function Token(props: Props) {
             }}
           />
           <CardBody>
-            <Text fontWeight="bold" fontSize="lg" mb={2}>
-              {listingMetadata.name}
+            <Text fontWeight="bold" fontSize="lg" mb={2} color="white">
+              {`Oferta # ${index + 1}`}
             </Text>
-            <Text>- Precio: {item.currencyValuePerToken.displayValue} SyliCoin</Text>
-            {type === 'ERC1155' && (
-              <Text>- Cantidad: {quantity}</Text>
-            )}
-            <Text>
-              - Vendedor: {listedByYou ? 'Usted' : shortenAddress(item.creatorAddress)}
-            </Text>
-            <Text>- Valor total de la oferta: {totalOfferValue.toFixed(2)} SyliCoin</Text>
-            <Text>- Rentabilidad Neta de la oferta: {netProfitOffer}</Text>
-            <Text>- Rentabilidad Bruta de la oferta: {grossProfitOffer}</Text>
-            <Text>- Rentabilidad Neta por Avaluó: {netProfitValuation}</Text>
+            {textItems.map((textItem, idx) => (
+              <Text
+                key={idx}
+                fontWeight="bold"
+                color={idx % 2 === 0 ? 'white' : 'green.400'}
+              >
+                {textItem}
+              </Text>
+            ))}
             <Flex mt={4} justifyContent="center">
               {account &&
                 (!listedByYou ? (
@@ -400,6 +412,7 @@ export function Token(props: Props) {
     })}
   </Flex>
 </Box>
+
 
                      
                       {/* Existing Table Display */}
