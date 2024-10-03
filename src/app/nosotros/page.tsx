@@ -11,13 +11,31 @@ export default function Nosotros() {
       {/* Pentaco Section */}
       <Box mb="8">
         <Heading as="h2" size="lg" mb="4">
+          Yesika Padilla
+        </Heading>
+        <Image
+          src="/yesi.png"
+          alt="Pentaco Logo"
+          borderRadius="md"
+          width="200px"
+          height="auto"
+          mb="4"
+        />
+        <Text fontSize="md">
+        Ingeniera con especialización en comunicaciones móviles y máster en liderazgo tecnológico por la Universidad de Brown. Con más de 9 años de experiencia en el Ministerio TIC de Colombia y más de 8 años en la banca colombiana, ha trabajado en la intersección de la tecnología y la inclusión financiera en el sector público y privado.
+
+Ha liderado proyectos innovadores que integran nuevas tecnologías como blockchain, inteligencia artificial e Internet de las cosas (IoT). Su enfoque en la tokenización de inmuebles en blockchain refleja un compromiso con la transformación del acceso a la propiedad y la inversión, promoviendo soluciones inclusivas y sostenibles en el mercado inmobiliario.
+        </Text>
+      </Box>
+      <Box mb="8">
+        <Heading as="h2" size="lg" mb="4">
           Pentaco
         </Heading>
         <Image
           src="/pentaco-logo.png"
           alt="Pentaco Logo"
           borderRadius="md"
-          width="100%"
+          width="200px"
           height="auto"
           mb="4"
         />
@@ -57,7 +75,7 @@ export default function Nosotros() {
           src="/pronus-logo.png"
           alt="Pronus Logo"
           borderRadius="md"
-          width="100%"
+          width="200px"
           height="auto"
           mb="4"
         />
@@ -78,7 +96,7 @@ export default function Nosotros() {
           src="/sfi-logo.png"
           alt="SFI Logo"
           borderRadius="md"
-          width="100%"
+          width="200px"
           height="auto"
           mb="4"
         />
