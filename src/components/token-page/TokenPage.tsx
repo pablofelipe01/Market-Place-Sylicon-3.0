@@ -38,7 +38,7 @@ import { CreateListing } from "./CreateListing";
 import { useMarketplaceContext } from "@/hooks/useMarketplaceContext";
 import dynamic from "next/dynamic";
 import { NftDetails } from "./NftDetails";
-import { Global } from "@emotion/react"; // Import for global styles
+import { Global } from "@emotion/react";
 
 const CancelListingButton = dynamic(() => import("./CancelListingButton"), {
   ssr: false,
@@ -200,8 +200,8 @@ export function Token(props: Props) {
   return (
     <Flex direction="column" mt="80px" pt="24px">
       <Global
-        styles={`
-          @keyframes flashing {
+        styles={
+          `@keyframes flashing {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.7; transform: scale(1.05); }
           }
@@ -209,8 +209,8 @@ export function Token(props: Props) {
             0% { color: #48BB78; }
             50% { color: #38A169; }
             100% { color: #48BB78; }
-          }
-        `}
+          }`
+        }
       />
       <Box mx="auto">
         <Flex
@@ -318,104 +318,98 @@ export function Token(props: Props) {
                 <AccordionPanel pb={4}>
                   {listings.length > 0 ? (
                     <>
-                        {/* Visual Section */}
-                        
-{/* Visual Section */}
-<Box mt="20px">
-  <Flex
-    overflowX="scroll"
-    py={4}
-    px={2}
-    gap={4}
-    sx={{
-      '&::-webkit-scrollbar': {
-        height: '8px',
-      },
-      '&::-webkit-scrollbar-thumb': {
-        background: '#ccc',
-        borderRadius: '4px',
-      },
-    }}
-  >
-    {listings.map((item, index) => {
-      const listedByYou =
-        item.creatorAddress.toLowerCase() ===
-        account?.address?.toLowerCase();
-      const listingMetadata = item.asset.metadata;
+                      {/* Visual Section */}
+                      <Box mt="20px">
+                        <Flex
+                          overflowX="scroll"
+                          py={4}
+                          px={2}
+                          gap={4}
+                          sx={{
+                            '&::-webkit-scrollbar': {
+                              height: '8px',
+                            },
+                            '&::-webkit-scrollbar-thumb': {
+                              background: '#ccc',
+                              borderRadius: '4px',
+                            },
+                          }}
+                        >
+                          {listings.map((item, index) => {
+                            const listedByYou =
+                              item.creatorAddress.toLowerCase() ===
+                              account?.address?.toLowerCase();
+                            const listingMetadata = item.asset.metadata;
 
-      // Calculate the total offer value
-      const pricePerToken = parseFloat(item.currencyValuePerToken.displayValue);
-      const quantity = parseInt(item.quantity.toString(), 10);
-      const totalOfferValue = pricePerToken * (type === 'ERC1155' ? quantity : 1);
+                            // Calculate the total offer value
+                            const pricePerToken = parseFloat(item.currencyValuePerToken.displayValue);
+                            const quantity = parseInt(item.quantity.toString(), 10);
+                            const totalOfferValue = pricePerToken * (type === 'ERC1155' ? quantity : 1);
 
-      // Placeholder values for Rentabilidad (replace with actual logic)
-      const netProfitOffer = 'n/a';
-      const grossProfitOffer = 'n/a';
-      const netProfitValuation = 'n/a';
+                            // Placeholder values for Rentabilidad (replace with actual logic)
+                            const netProfitOffer = 'n/a';
+                            const grossProfitOffer = 'n/a';
+                            const netProfitValuation = 'n/a';
 
-      // Define text items and their labels
-      const textItems = [
-        `- Precio por Token: ${item.currencyValuePerToken.displayValue} SyliCoin`,
-        type === 'ERC1155' ? `- Cantidad de Tokens: ${quantity}` : null,
-        `- Vendedor: ${listedByYou ? 'Usted' : shortenAddress(item.creatorAddress)}`,
-        `- Valor total de la oferta: ${totalOfferValue.toFixed(2)} SyliCoin`,
-        `- Rentabilidad Neta de la oferta: ${netProfitOffer}`,
-        `- Rentabilidad Bruta de la oferta: ${grossProfitOffer}`,
-        `- Rentabilidad Neta por Avaluó: ${netProfitValuation}`,
-      ].filter(Boolean); // Remove null items
+                            // Define text items and their labels
+                            const textItems = [
+                              `- Precio por Token: ${item.currencyValuePerToken.displayValue} SyliCoin`,
+                              type === 'ERC1155' ? `- Cantidad de Tokens: ${quantity}` : null,
+                              `- Vendedor: ${listedByYou ? 'Usted' : shortenAddress(item.creatorAddress)}`,
+                              `- Valor total de la oferta: ${totalOfferValue.toFixed(2)} SyliCoin`,
+                              `- Rentabilidad Neta de la oferta: ${netProfitOffer}`,
+                              `- Rentabilidad Bruta de la oferta: ${grossProfitOffer}`,
+                              `- Rentabilidad Neta por Avaluó: ${netProfitValuation}`,
+                            ].filter(Boolean); // Remove null items
 
-      return (
-        <Card
-          key={item.id.toString()}
-          minW="250px"
-          maxW="250px"
-          boxShadow="xl"
-          borderRadius="lg"
-          border="0.5px solid white" 
-          overflow="hidden"
-          bg="rgba(1, 9, 44, 0.397)" 
-          _hover={{ boxShadow: '2xl' }}
-        >
-          <MediaRenderer
-            client={client}
-            src={listingMetadata.image}
-            style={{
-              width: '100%',
-              height: '200px',
-              objectFit: 'cover',
-            }}
-          />
-          <CardBody>
-            <Text fontWeight="bold" fontSize="lg" mb={2} color="white">
-              {`Oferta # ${index + 1}`}
-            </Text>
-            {textItems.map((textItem, idx) => (
-              <Text
-                key={idx}
-                fontWeight="bold"
-                color={idx % 2 === 0 ? 'white' : 'green.400'}
-              >
-                {textItem}
-              </Text>
-            ))}
-            <Flex mt={4} justifyContent="center">
-              {account &&
-                (!listedByYou ? (
-                  <BuyFromListingButton account={account} listing={item} />
-                ) : (
-                  <CancelListingButton account={account} listingId={item.id} />
-                ))}
-            </Flex>
-          </CardBody>
-        </Card>
-      );
-    })}
-  </Flex>
-</Box>
-
-
-                     
-                      {/* Existing Table Display */}
+                            return (
+                              <Card
+                                key={item.id.toString()}
+                                minW="250px"
+                                maxW="250px"
+                                boxShadow="xl"
+                                borderRadius="lg"
+                                border="0.5px solid white"
+                                overflow="hidden"
+                                bg="rgba(1, 9, 44, 0.397)"
+                                _hover={{ boxShadow: '2xl' }}
+                              >
+                                <MediaRenderer
+                                  client={client}
+                                  src={listingMetadata.image}
+                                  style={{
+                                    width: '100%',
+                                    height: '200px',
+                                    objectFit: 'cover',
+                                  }}
+                                />
+                                <CardBody>
+                                  <Text fontWeight="bold" fontSize="lg" mb={2} color="white">
+                                    {`Oferta # ${index + 1}`}
+                                  </Text>
+                                  {textItems.map((textItem, idx) => (
+                                    <Text
+                                      key={idx}
+                                      fontWeight="bold"
+                                      color={idx % 2 === 0 ? 'white' : 'green.400'}
+                                    >
+                                      {textItem}
+                                    </Text>
+                                  ))}
+                                  <Flex mt={4} justifyContent="center">
+                                    {account &&
+                                      (!listedByYou ? (
+                                        <BuyFromListingButton account={account} listing={item} />
+                                      ) : (
+                                        <CancelListingButton account={account} listingId={item.id} />
+                                      ))}
+                                  </Flex>
+                                </CardBody>
+                              </Card>
+                            );
+                          })}
+                        </Flex>
+                      </Box>
                       <Text fontWeight="bold" mt={4} mb={2}>
                         Precio Promedio: {averagePrice} SyliCoin
                       </Text>
@@ -429,14 +423,18 @@ export function Token(props: Props) {
                       <TableContainer>
                         <Table
                           variant="simple"
-                          sx={{ "th, td": { borderBottom: "none" } }}
+                          sx={{ "th, td": { borderBottom: "1px solid #E2E8F0" } }}
                         >
                           <Thead>
                             <Tr>
-                              <Th>Precio en SyliCoin</Th>
-                              {type === "ERC1155" && <Th px={1}>Cantidad</Th>}
-                              <Th px={1}>Vendedor</Th>
-                              <Th>{""}</Th>
+                              <Th>Precio por Token (SyliCoin)</Th>
+                              <Th>Cantidad de Tokens</Th>
+                              <Th>Vendedor</Th>
+                              <Th>Valor Total de la Oferta (SyliCoin)</Th>
+                              <Th>Rentabilidad Neta de la Oferta</Th>
+                              <Th>Rentabilidad Bruta de la Oferta</Th>
+                              <Th>Rentabilidad Neta por Avaluó</Th>
+                              <Th>Acciones</Th>
                             </Tr>
                           </Thead>
                           <Tbody>
@@ -444,32 +442,34 @@ export function Token(props: Props) {
                               const listedByYou =
                                 item.creatorAddress.toLowerCase() ===
                                 account?.address?.toLowerCase();
+                              const pricePerToken = parseFloat(item.currencyValuePerToken.displayValue);
+                              const quantity = parseInt(item.quantity.toString(), 10);
+                              const totalOfferValue = pricePerToken * (type === "ERC1155" ? quantity : 1);
+
+                              // Placeholder values for Rentabilidad (replace with actual logic)
+                              const netProfitOffer = "n/a";
+                              const grossProfitOffer = "n/a";
+                              const netProfitValuation = "n/a";
+
                               return (
                                 <Tr key={item.id.toString()}>
+                                  <Td>{item.currencyValuePerToken.displayValue} SyliCoin</Td>
+                                  <Td>{type === "ERC1155" ? quantity : 1}</Td>
+                                  <Td>{listedByYou ? "Usted" : shortenAddress(item.creatorAddress)}</Td>
+                                  <Td>{totalOfferValue.toFixed(2)} SyliCoin</Td>
+                                  <Td>{netProfitOffer}</Td>
+                                  <Td>{grossProfitOffer}</Td>
+                                  <Td>{netProfitValuation}</Td>
                                   <Td>
-                                    <Text>
-                                      {item.currencyValuePerToken.displayValue} SyliCoin
-                                    </Text>
+                                    <Flex>
+                                      {account &&
+                                        (!listedByYou ? (
+                                          <BuyFromListingButton account={account} listing={item} />
+                                        ) : (
+                                          <CancelListingButton account={account} listingId={item.id} />
+                                        ))}
+                                    </Flex>
                                   </Td>
-                                  {type === "ERC1155" && (
-                                    <Td px={1}>
-                                      <Text>{item.quantity.toString()}</Text>
-                                    </Td>
-                                  )}
-                                  <Td px={1}>
-                                    <Text>
-                                      {listedByYou ? "Usted" : shortenAddress(item.creatorAddress)}
-                                    </Text>
-                                  </Td>
-                                  {account && (
-                                    <Td>
-                                      {!listedByYou ? (
-                                        <BuyFromListingButton account={account} listing={item} />
-                                      ) : (
-                                        <CancelListingButton account={account} listingId={item.id} />
-                                      )}
-                                    </Td>
-                                  )}
                                 </Tr>
                               );
                             })}
@@ -489,3 +489,5 @@ export function Token(props: Props) {
     </Flex>
   );
 }
+
+export default Token;
