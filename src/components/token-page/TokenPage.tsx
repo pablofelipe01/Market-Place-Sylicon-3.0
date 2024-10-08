@@ -88,11 +88,7 @@ const ProfitabilityCalculator = ({ basePrice, baseProfit }) => {
   );
 };
 
-type Props = {
-  tokenId: bigint;
-};
-
-export function Token(props: Props) {
+export function Token(props) {
   const {
     type,
     nftContract,
@@ -133,16 +129,6 @@ export function Token(props: Props) {
     [listingsInSelectedCollection, nftContract.address, tokenId]
   );
 
-  const auctions = useMemo(
-    () =>
-      (allAuctions || []).filter(
-        (item) =>
-          item.assetContractAddress.toLowerCase() ===
-            nftContract.address.toLowerCase() && item.asset.id === BigInt(tokenId)
-      ),
-    [allAuctions, nftContract.address, tokenId]
-  );
-
   const averagePrice = useMemo(() => {
     if (listings.length === 0) return null;
     const total = listings.reduce(
@@ -151,6 +137,23 @@ export function Token(props: Props) {
     );
     return (total / listings.length).toFixed(2);
   }, [listings]);
+
+  const ownedByYou =
+    nft?.owner?.toLowerCase() === account?.address?.toLowerCase();
+
+  // Find out how many listings are created by the user for this token
+  const userListingsCount = useMemo(() => {
+    return listings.filter(
+      (listing) => listing.creatorAddress.toLowerCase() === account?.address?.toLowerCase()
+    ).length;
+  }, [listings, account]);
+
+  // Render the CreateListing button only if the user has remaining NFTs to list
+  const canCreateListing =
+    account &&
+    nft &&
+    (ownedByYou || (ownedQuantity1155 && ownedQuantity1155 > 0n)) &&
+    (type === "ERC721" || (ownedQuantity1155 && ownedQuantity1155 > BigInt(userListingsCount)));
 
   // State to hold the exchange rate
   const [exchangeRate, setExchangeRate] = useState<number | null>(null);
@@ -187,15 +190,6 @@ export function Token(props: Props) {
     }
     return null;
   }, [averagePrice, exchangeRate]);
-
-  const allLoaded = !isLoadingNFT && !isLoading && !isRefetchingAllListings;
-
-  const ownedByYou =
-    nft?.owner?.toLowerCase() === account?.address?.toLowerCase();
-
-  // Define basePrice and baseProfit for the ProfitabilityCalculator
-  const basePrice = 100000; // Adjust this value as needed
-  const baseProfit = 8.30;   // Adjust this value as needed
 
   return (
     <Flex direction="column" mt="80px" pt="24px">
@@ -284,18 +278,13 @@ export function Token(props: Props) {
                 </Flex>
               </>
             )}
-            {account &&
-              nft &&
-              (ownedByYou ||
-                (ownedQuantity1155 && ownedQuantity1155 > 0n)) && (
-                <CreateListing tokenId={nft?.id} account={account} />
-              )}
-            <Accordion
-              mt="30px"
-              sx={{ container: {} }}
-              defaultIndex={[0, 1]}
-              allowMultiple
-            >
+
+            {/* Render CreateListing only if the user can create one */}
+            {canCreateListing && (
+              <CreateListing tokenId={nft?.id} account={account} />
+            )}
+
+            <Accordion mt="30px" sx={{ container: {} }} defaultIndex={[0, 1]} allowMultiple>
               <AccordionItem>
                 <Text>
                   <AccordionButton>
@@ -318,7 +307,6 @@ export function Token(props: Props) {
                 <AccordionPanel pb={4}>
                   {listings.length > 0 ? (
                     <>
-                      {/* Visual Section */}
                       <Box mt="20px">
                         <Flex
                           overflowX="scroll"
@@ -341,17 +329,14 @@ export function Token(props: Props) {
                               account?.address?.toLowerCase();
                             const listingMetadata = item.asset.metadata;
 
-                            // Calculate the total offer value
                             const pricePerToken = parseFloat(item.currencyValuePerToken.displayValue);
                             const quantity = parseInt(item.quantity.toString(), 10);
                             const totalOfferValue = pricePerToken * (type === 'ERC1155' ? quantity : 1);
 
-                            // Placeholder values for Rentabilidad (replace with actual logic)
                             const netProfitOffer = 'n/a';
                             const grossProfitOffer = 'n/a';
                             const netProfitValuation = 'n/a';
 
-                            // Define text items and their labels
                             const textItems = [
                               `- Precio por Token: ${item.currencyValuePerToken.displayValue} SyliCoin`,
                               type === 'ERC1155' ? `- Cantidad de Tokens: ${quantity}` : null,
@@ -360,7 +345,7 @@ export function Token(props: Props) {
                               `- Rentabilidad Neta de la oferta: ${netProfitOffer}`,
                               `- Rentabilidad Bruta de la oferta: ${grossProfitOffer}`,
                               `- Rentabilidad Neta por Avaluó: ${netProfitValuation}`,
-                            ].filter(Boolean); // Remove null items
+                            ].filter(Boolean);
 
                             return (
                               <Card
@@ -418,8 +403,7 @@ export function Token(props: Props) {
                           Precio Promedio en COP: {averagePriceInCOP}
                         </Text>
                       )}
-                      {/* Include the ProfitabilityCalculator */}
-                      <ProfitabilityCalculator basePrice={basePrice} baseProfit={baseProfit} />
+                      <ProfitabilityCalculator basePrice={100000} baseProfit={8.30} />
                       <TableContainer>
                         <Table
                           variant="simple"
@@ -446,7 +430,6 @@ export function Token(props: Props) {
                               const quantity = parseInt(item.quantity.toString(), 10);
                               const totalOfferValue = pricePerToken * (type === "ERC1155" ? quantity : 1);
 
-                              // Placeholder values for Rentabilidad (replace with actual logic)
                               const netProfitOffer = "n/a";
                               const grossProfitOffer = "n/a";
                               const netProfitValuation = "n/a";
