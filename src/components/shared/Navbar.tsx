@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import { client } from "@/consts/client";
 import { polygon } from "@/consts/chains";
 import { useGetENSAvatar } from "@/hooks/useGetENSAvatar";
@@ -50,6 +51,10 @@ export function Navbar() {
   const account = useActiveAccount();
   const wallet = useActiveWallet();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode } = useColorMode();
+
+  const linkColor = colorMode === 'light' ? 'blue.200' : 'white';
+  const linkHoverColor = colorMode === 'light' ? 'white' : 'gray.800';
 
   return (
     <Box
@@ -92,19 +97,22 @@ export function Navbar() {
         >
           <Link
             href="/nosotros"
-            _hover={{ textDecoration: "none", color: "white" }}
+            _hover={{ textDecoration: "none", color: linkHoverColor }}
+            color={linkColor}
           >
             Nosotros
           </Link>
           <Link
             href="/contacto"
-            _hover={{ textDecoration: "none", color: "white" }}
+            _hover={{ textDecoration: "none", color: linkHoverColor }}
+            color={linkColor}
           >
             Contacto
           </Link>
           <Link
             href="/paso-a-paso"
-            _hover={{ textDecoration: "none", color: "white" }}
+            _hover={{ textDecoration: "none", color: linkHoverColor }}
+            color={linkColor}
           >
             Paso a Paso
           </Link>
@@ -117,7 +125,7 @@ export function Navbar() {
               chain={polygon}
               connectModal={{ size: "compact" }}
               connectButton={{ label: "Login " }}
-              theme={"dark"}
+              theme={colorMode}
             />
           )}
         </Flex>
@@ -129,13 +137,13 @@ export function Navbar() {
             <DrawerHeader>Menu</DrawerHeader>
             <DrawerBody>
               <VStack align="flex-start" spacing="24px">
-                <Link href="/nosotros" onClick={onClose}>
+                <Link href="/nosotros" onClick={onClose} color={linkColor} _hover={{ color: linkHoverColor }}>
                   Nosotros
                 </Link>
-                <Link href="/contacto" onClick={onClose}>
+                <Link href="/contacto" onClick={onClose} color={linkColor} _hover={{ color: linkHoverColor }}>
                   Contacto
                 </Link>
-                <Link href="/paso-a-paso" onClick={onClose}>
+                <Link href="/paso-a-paso" onClick={onClose} color={linkColor} _hover={{ color: linkHoverColor }}>
                   Paso a Paso
                 </Link>
                 <ToggleThemeButton />
@@ -147,7 +155,7 @@ export function Navbar() {
                     chain={polygon}
                     connectModal={{ size: "compact" }}
                     connectButton={{ label: "Login " }}
-                    theme={"dark"}
+                    theme={colorMode}
                   />
                 )}
               </VStack>
