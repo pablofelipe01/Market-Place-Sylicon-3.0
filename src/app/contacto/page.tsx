@@ -22,7 +22,7 @@ export default function Contacto() {
             boxSize="20px"
             borderRadius="full"
           />
-          <Text fontSize="lg">+57 1 234 567890</Text>
+          <Text fontSize="lg">+57 1 805 2141</Text>
         </HStack>
         <HStack>
           {/* <Image

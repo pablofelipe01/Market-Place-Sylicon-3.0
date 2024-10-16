@@ -21,6 +21,7 @@ import {
   Tr,
   Input,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import {
   balanceOf,
@@ -100,6 +101,22 @@ export function Token(props) {
   } = useMarketplaceContext();
   const { tokenId } = props;
   const account = useActiveAccount();
+  const toast = useToast();
+
+  const handleCardClick = (item) => {
+    if (!account) {
+      toast({
+        title: "Por favor, inicie sesión",
+        description: "Debe conectar su billetera para interactuar con las ofertas.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      // Handle the card click for logged-in users
+      console.log("Card clicked:", item);
+    }
+  };
 
   const { data: nft, isLoading: isLoadingNFT } = useReadContract(
     type === "ERC1155" ? getERC1155 : getERC721,
@@ -338,13 +355,13 @@ export function Token(props) {
                             const netProfitValuation = 'n/a';
 
                             const textItems = [
-                              `- Precio por Token: ${item.currencyValuePerToken.displayValue} SyliCoin`,
-                              type === 'ERC1155' ? `- Cantidad de Tokens: ${quantity}` : null,
-                              `- Vendedor: ${listedByYou ? 'Usted' : shortenAddress(item.creatorAddress)}`,
-                              `- Valor total de la oferta: ${totalOfferValue.toFixed(2)} SyliCoin`,
-                              `- Rentabilidad Neta de la oferta: ${netProfitOffer}`,
-                              `- Rentabilidad Bruta de la oferta: ${grossProfitOffer}`,
-                              `- Rentabilidad Neta por Avaluó: ${netProfitValuation}`,
+                              `• Precio por Token: ${item.currencyValuePerToken.displayValue} SyliCoin`,
+                              type === 'ERC1155' ? `• Cantidad de Tokens: ${quantity}` : null,
+                              `• Vendedor: ${listedByYou ? 'Usted' : shortenAddress(item.creatorAddress)}`,
+                              `• Valor total de la oferta: ${totalOfferValue.toFixed(2)} SyliCoin`,
+                              `• Rentabilidad Neta de la oferta: ${netProfitOffer}`,
+                              `• Rentabilidad Bruta de la oferta: ${grossProfitOffer}`,
+                              `• Rentabilidad Neta por Avaluó: ${netProfitValuation}`,
                             ].filter(Boolean);
 
                             return (
@@ -358,6 +375,7 @@ export function Token(props) {
                                 overflow="hidden"
                                 bg="rgba(1, 9, 44, 0.397)"
                                 _hover={{ boxShadow: '2xl' }}
+                                onClick={() => handleCardClick(item)}
                               >
                                 <MediaRenderer
                                   client={client}
@@ -376,7 +394,7 @@ export function Token(props) {
                                     <Text
                                       key={idx}
                                       fontWeight="bold"
-                                      color={idx % 2 === 0 ? 'white' : 'green.400'}
+                                      color='white'
                                     >
                                       {textItem}
                                     </Text>

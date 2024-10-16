@@ -29,7 +29,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Popsy",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmThMKejTcGVd8ux9gZZ3PjZ287jzBwtECAiDhv9ESHN5m",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmQbLxcTV8k8HG645P7KKQBkWGZoaNucbN8qDW4aNbpWHo",
     type: "ERC1155",
   },
   {
@@ -37,7 +37,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "WBC",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmP4xW5XBoJgPP1Hwyy4Na34Qp3TMNRnKStZga3h2LCXH4",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmX5FUB4W6HecdszLdSvy6sbvbQYFFphTu7h5tPGtzcFSs",
     type: "ERC1155",
   },
   {
@@ -45,7 +45,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Piso quinto",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/Qmc5jqDBHCqtvyA6o9pE4jvqfaEFyPMTMdQxfugGAG8JJw",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmVg3xCadBEqjU4uJWZW9RCcM6MZVu6KMmyTjQ7yfm5Cz7",
     type: "ERC1155",
   },
   {
@@ -53,7 +53,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Zona Franca",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmevJqJtvKGfCJ1ZkBEcoSGrq1xoWXhSeJkxaNfzAQpZCq",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmR9CiRvUziutSQQBsxxGo1M2VeCRmu1FrLB4SK8X5vNfj",
     type: "ERC1155",
   },
   {
@@ -61,7 +61,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Logic II",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmQPZ5xAdNdyrethQT1nsosLWz7hjPe53JzzviDhXdXaLa",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmUnueDVk54XYb9MG1xSiXom6CWhYR374VL6uZXv9Msb4D",
     type: "ERC1155",
   },
   {
@@ -69,7 +69,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Grupo Capital",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmXZsypJACTvT19ExpjP82v6FEYyG1Rva3AE6j5XfFDNZs",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmZkqsBWR9QSqmiH72Hea9r5bdmwvCWuA57zapp9PGKy3C",
     type: "ERC1155",
   },
   {
