@@ -41,7 +41,7 @@ const ProfitabilityCalculator = ({ basePrice, baseProfit }) => {
       <Text fontWeight="bold">Calcule su Rentabilidad en Pesos</Text>
       <Flex mt={2}>
         <Input
-          placeholder="Ingrese Valor en Pesos"
+          placeholder="Ingrese Valor del Token en Pesos"
           value={customPrice}
           onChange={(e) => setCustomPrice(e.target.value)}
           mr={2}
