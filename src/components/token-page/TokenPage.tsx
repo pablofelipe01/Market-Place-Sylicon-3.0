@@ -355,10 +355,10 @@ export function Token(props) {
                             const netProfitValuation = 'n/a';
 
                             const textItems = [
-                              `• Precio por Token: ${item.currencyValuePerToken.displayValue} SyliCoin`,
+                              `• Precio por Token: ${item.currencyValuePerToken.displayValue} Matic`,
                               type === 'ERC1155' ? `• Cantidad de Tokens: ${quantity}` : null,
                               `• Vendedor: ${listedByYou ? 'Usted' : shortenAddress(item.creatorAddress)}`,
-                              `• Valor total de la oferta: ${totalOfferValue.toFixed(2)} SyliCoin`,
+                              `• Valor total de la oferta: ${totalOfferValue.toFixed(2)} Matic`,
                               `• Rentabilidad Neta de la oferta: ${netProfitOffer}`,
                               `• Rentabilidad Bruta de la oferta: ${grossProfitOffer}`,
                               `• Rentabilidad Neta por Avaluó: ${netProfitValuation}`,
@@ -414,7 +414,7 @@ export function Token(props) {
                         </Flex>
                       </Box>
                       <Text fontWeight="bold" mt={4} mb={2}>
-                        Precio Promedio: {averagePrice} SyliCoin
+                        Precio Promedio: {averagePrice} Matic
                       </Text>
                       {averagePriceInCOP && (
                         <Text fontWeight="bold" mb={2}>
@@ -429,10 +429,10 @@ export function Token(props) {
                         >
                           <Thead>
                             <Tr>
-                              <Th>Precio por Token (SyliCoin)</Th>
+                              <Th>Precio por Token (Matic)</Th>
                               <Th>Cantidad de Tokens</Th>
                               <Th>Vendedor</Th>
-                              <Th>Valor Total de la Oferta (SyliCoin)</Th>
+                              <Th>Valor Total de la Oferta (Matic)</Th>
                               <Th>Rentabilidad Neta de la Oferta</Th>
                               <Th>Rentabilidad Bruta de la Oferta</Th>
                               <Th>Rentabilidad Neta por Avaluó</Th>
@@ -454,10 +454,10 @@ export function Token(props) {
 
                               return (
                                 <Tr key={item.id.toString()}>
-                                  <Td>{item.currencyValuePerToken.displayValue} SyliCoin</Td>
+                                  <Td>{item.currencyValuePerToken.displayValue} Matic</Td>
                                   <Td>{type === "ERC1155" ? quantity : 1}</Td>
                                   <Td>{listedByYou ? "Usted" : shortenAddress(item.creatorAddress)}</Td>
-                                  <Td>{totalOfferValue.toFixed(2)} SyliCoin</Td>
+                                  <Td>{totalOfferValue.toFixed(2)} Matic</Td>
                                   <Td>{netProfitOffer}</Td>
                                   <Td>{grossProfitOffer}</Td>
                                   <Td>{netProfitValuation}</Td>
