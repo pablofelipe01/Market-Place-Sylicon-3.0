@@ -29,7 +29,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Popsy",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmQbLxcTV8k8HG645P7KKQBkWGZoaNucbN8qDW4aNbpWHo",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmdEzCXK8C4fH9VJitL6tzcUXJdZffkMjUnEzYdUUfRhwQ",
     type: "ERC1155",
   },
   {
@@ -37,7 +37,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "WBC",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmX5FUB4W6HecdszLdSvy6sbvbQYFFphTu7h5tPGtzcFSs",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmTDziFQ5aBUB6S1Gf2yMcxGRpaKTzEAy6xQ4MyM3ib95T",
     type: "ERC1155",
   },
   {
@@ -45,7 +45,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Piso quinto",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmVg3xCadBEqjU4uJWZW9RCcM6MZVu6KMmyTjQ7yfm5Cz7",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmbrT44srTtzVQZuL2o1vyur8jKjJ8ovgSMuRkuAfTiv8S",
     type: "ERC1155",
   },
   {
@@ -53,7 +53,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Zona Franca",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmR9CiRvUziutSQQBsxxGo1M2VeCRmu1FrLB4SK8X5vNfj",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmRi9TMj5a1VmUY89pz53V8fdciud95koFMmBgDCCxyfc1",
     type: "ERC1155",
   },
   {
@@ -61,7 +61,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Logic II",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmUnueDVk54XYb9MG1xSiXom6CWhYR374VL6uZXv9Msb4D",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmZ1SMu6NgSk6buQZYGtfEVsb9SbuxZ5DjEVMjvuh59mhf",
     type: "ERC1155",
   },
   {
@@ -69,7 +69,7 @@ export const NFT_CONTRACTS: NftContract[] = [
     chain: polygon,
     // title: "Grupo Capital",
     thumbnailUrl:
-      "https://tokensolutions.mypinata.cloud/ipfs/QmZkqsBWR9QSqmiH72Hea9r5bdmwvCWuA57zapp9PGKy3C",
+      "https://tokensolutions.mypinata.cloud/ipfs/QmSsULTtxr8PZJRsWCXiqcABaBFmGgE9ScWiuiawwF4Eds",
     type: "ERC1155",
   },
   {
