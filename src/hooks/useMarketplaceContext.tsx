@@ -9,7 +9,7 @@ import {
   SupplyInfo,
 } from "@/extensions/getLargestCirculatingTokenId";
 import { Box, Spinner } from "@chakra-ui/react";
-import { createContext, type ReactNode, useContext } from "react";
+import { createContext, type ReactNode, useContext, useEffect, useMemo } from "react";
 import { getContract, type ThirdwebContract } from "thirdweb";
 import { getContractMetadata } from "thirdweb/extensions/common";
 import { isERC1155 } from "thirdweb/extensions/erc1155";
@@ -24,68 +24,58 @@ import { useReadContract } from "thirdweb/react";
 
 export type NftType = "ERC1155" | "ERC721";
 
-/**
- * Support for English auction coming soon.
- */
 const SUPPORT_AUCTION = false;
 
-type TMarketplaceContext = {
+// Logging utility
+const debugLog = (message: string, data: any) => {
+  console.log(`MarketplaceContext - ${message}:`, data);
+};
+
+interface MarketplaceContextType {
   marketplaceContract: ThirdwebContract;
   nftContract: ThirdwebContract;
   type: NftType;
   isLoading: boolean;
   allValidListings: DirectListing[] | undefined;
   allAuctions: EnglishAuction[] | undefined;
-  contractMetadata:
-    | {
-        [key: string]: any;
-        name: string;
-        symbol: string;
-      }
-    | undefined;
-  refetchAllListings: Function;
+  contractMetadata: {
+    name: string;
+    symbol: string;
+    [key: string]: any;
+  } | undefined;
+  refetchAllListings: () => Promise<void>;
   isRefetchingAllListings: boolean;
   listingsInSelectedCollection: DirectListing[];
   supplyInfo: SupplyInfo | undefined;
   supportedTokens: Token[];
-};
+}
 
-const MarketplaceContext = createContext<TMarketplaceContext | undefined>(
-  undefined
-);
+const MarketplaceContext = createContext<MarketplaceContextType | undefined>(undefined);
+
+interface MarketplaceProviderProps {
+  chainId: string;
+  contractAddress: string;
+  children: ReactNode;
+}
 
 export default function MarketplaceProvider({
   chainId,
   contractAddress,
   children,
-}: {
-  chainId: string;
-  contractAddress: string;
-  children: ReactNode;
-}) {
+}: MarketplaceProviderProps) {
   let _chainId: number;
   try {
     _chainId = Number.parseInt(chainId);
   } catch (err) {
     throw new Error("Invalid chain ID");
   }
+
   const marketplaceContract = MARKETPLACE_CONTRACTS.find(
     (item) => item.chain.id === _chainId
   );
   if (!marketplaceContract) {
     throw new Error("Marketplace not supported on this chain");
   }
-
-  const collectionSupported = NFT_CONTRACTS.find(
-    (item) =>
-      item.address.toLowerCase() === contractAddress.toLowerCase() &&
-      item.chain.id === _chainId
-  );
-  // You can remove this condition if you want to supported _any_ nft collection
-  // or you can update the entries in `NFT_CONTRACTS`
-  // if (!collectionSupported) {
-  //   throw new Error("Contract not supported on this marketplace");
-  // }
 
   const contract = getContract({
     chain: marketplaceContract.chain,
@@ -105,15 +95,16 @@ export default function MarketplaceProvider({
       enabled: !!marketplaceContract,
     },
   });
-  const { data: is1155, isLoading: isChecking1155 } = useReadContract(
-    isERC1155,
-    { contract, queryOptions: { enabled: !!marketplaceContract } }
-  );
+
+  const { data: is1155, isLoading: isChecking1155 } = useReadContract(isERC1155, {
+    contract,
+    queryOptions: { enabled: !!marketplaceContract }
+  });
 
   const isNftCollection = is1155 || is721;
-
-  if (!isNftCollection && !isChecking1155 && !isChecking721)
+  if (!isNftCollection && !isChecking1155 && !isChecking721) {
     throw new Error("Not a valid NFT collection");
+  }
 
   const { data: contractMetadata, isLoading: isLoadingContractMetadata } =
     useReadContract(getContractMetadata, {
@@ -132,16 +123,52 @@ export default function MarketplaceProvider({
     contract: marketplace,
     queryOptions: {
       enabled: isNftCollection,
+      refetchInterval: 30000, // 30 segundos
+      staleTime: 15000,      // 15 segundos
+      cacheTime: 30000,      // 30 segundos
     },
   });
 
-  const listingsInSelectedCollection = allValidListings?.length
-    ? allValidListings.filter(
-        (item) =>
-          item.assetContractAddress.toLowerCase() ===
-          contract.address.toLowerCase()
-      )
-    : [];
+  // Log raw listings data
+  useEffect(() => {
+    if (allValidListings) {
+      debugLog('Raw listings data', {
+        marketplaceAddress: marketplace.address,
+        totalListings: allValidListings.length,
+        listings: allValidListings.map(listing => ({
+          id: listing.id.toString(),
+          assetContract: listing.assetContractAddress,
+          tokenId: listing.tokenId?.toString(),
+          status: listing.status,
+          startTime: new Date(Number(listing.startTimeInSeconds) * 1000).toISOString(),
+          endTime: new Date(Number(listing.endTimeInSeconds) * 1000).toISOString()
+        }))
+      });
+    }
+  }, [allValidListings, marketplace.address]);
+
+  const listingsInSelectedCollection = useMemo(() => {
+    if (!allValidListings?.length) return [];
+
+    debugLog('Filtering listings', {
+      collectionAddress: contract.address.toLowerCase(),
+      totalListings: allValidListings.length
+    });
+
+    return allValidListings.filter((item) => {
+      const addressMatch = item.assetContractAddress.toLowerCase() === 
+        contract.address.toLowerCase();
+      
+      debugLog('Processing listing', {
+        listingId: item.id.toString(),
+        listingContract: item.assetContractAddress.toLowerCase(),
+        targetContract: contract.address.toLowerCase(),
+        addressMatch
+      });
+
+      return addressMatch;
+    });
+  }, [allValidListings, contract.address]);
 
   const { data: allAuctions, isLoading: isLoadingAuctions } = useReadContract(
     getAllAuctions,

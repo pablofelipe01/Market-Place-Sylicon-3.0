@@ -31,7 +31,7 @@ export function CreateListing(props: Props) {
   useEffect(() => {
     setCurrency({
       tokenAddress: NATIVE_TOKEN_ADDRESS,
-      symbol: chain.nativeCurrency?.symbol || "Matic",
+      symbol: chain.nativeCurrency?.symbol || "POL",
       icon: NATIVE_TOKEN_ICON_MAP[chain.id] || "/path-to-sylicon-pesos-icon.png",
     });
   }, [chain]);
@@ -79,8 +79,8 @@ export function CreateListing(props: Props) {
           <>
             <Flex direction="row" flexWrap="wrap" justifyContent="space-between">
               <Box>
-                <Text>Precio en Matic</Text>
-                <Input type="number" ref={priceRef} placeholder="$ Matic" />
+                <Text>Precio en Pol</Text>
+                <Input type="number" ref={priceRef} placeholder="$ POL" />
               </Box>
               <Box>
                 <Text>Cantidad</Text>
@@ -95,10 +95,6 @@ export function CreateListing(props: Props) {
           </>
         )}
 
-        {/* <Flex direction="row" alignItems="center" minH="48px">
-          <Image boxSize="2rem" borderRadius="full" src={currency?.icon} mr="12px" />
-          <Text my="auto">SyliCoin</Text>
-        </Flex> */}
 
         <Box mt="4" position="relative">
           <Text fontSize="lg" mb="2">Calculadora:</Text>

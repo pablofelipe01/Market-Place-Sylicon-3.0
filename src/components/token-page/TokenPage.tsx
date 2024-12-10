@@ -41,6 +41,30 @@ import dynamic from "next/dynamic";
 import { NftDetails } from "./NftDetails";
 import { Global } from "@emotion/react";
 
+const debugLog = (message: string, data: any) => {
+  console.log(`DEBUG - ${message}:`, data);
+};
+
+const safeIdComparison = (id1: string | bigint, id2: string | bigint) => {
+  try {
+    const bigInt1 = BigInt(id1.toString());
+    const bigInt2 = BigInt(id2.toString());
+    return bigInt1 === bigInt2;
+  } catch (error) {
+    console.error('Error comparing IDs:', error);
+    return false;
+  }
+};
+
+const generateSafeKey = (prefix: string, id: string | bigint, index: number) => {
+  try {
+    return `${prefix}-${id.toString()}-${index}`;
+  } catch (error) {
+    console.error('Error generating key:', error);
+    return `${prefix}-${Date.now()}-${Math.random()}`;
+  }
+};
+
 const CancelListingButton = dynamic(() => import("./CancelListingButton"), {
   ssr: false,
 });
@@ -135,16 +159,48 @@ export function Token(props) {
       enabled: !!account?.address && type === "ERC1155",
     },
   });
-
+  
   const listings = useMemo(
-    () =>
-      (listingsInSelectedCollection || []).filter(
-        (item) =>
-          item.assetContractAddress.toLowerCase() ===
-            nftContract.address.toLowerCase() && item.asset.id === BigInt(tokenId)
-      ),
+    () => {
+      debugLog('listingsInSelectedCollection received', listingsInSelectedCollection);
+  
+      return (listingsInSelectedCollection || []).filter((item) => {
+        try {
+          // Convertir IDs a string para comparación
+          const itemTokenId = item.tokenId?.toString() || item.asset?.id?.toString() || '0';
+          const currentTokenId = tokenId.toString();
+          
+          debugLog('Comparing listing', {
+            listingId: item.id.toString(),
+            itemTokenId,
+            currentTokenId,
+            assetContract: item.assetContractAddress.toLowerCase(),
+            nftContract: nftContract.address.toLowerCase()
+          });
+  
+          const addressMatch = item.assetContractAddress.toLowerCase() === 
+            nftContract.address.toLowerCase();
+          const idMatch = itemTokenId === currentTokenId;
+  
+          return addressMatch && idMatch;
+        } catch (error) {
+          console.error('Error processing listing:', error);
+          return false;
+        }
+      });
+    },
     [listingsInSelectedCollection, nftContract.address, tokenId]
   );
+  useEffect(() => {
+    debugLog('Filtered listings updated', {
+      count: listings.length,
+      listings: listings.map(l => ({
+        id: l.id.toString(),
+        tokenId: l.tokenId?.toString(),
+        assetId: l.asset?.id?.toString()
+      }))
+    });
+  }, [listings]);
 
   const averagePrice = useMemo(() => {
     if (listings.length === 0) return null;
@@ -177,13 +233,14 @@ export function Token(props) {
 
   // Fetch the exchange rate when the component mounts or when averagePrice changes
   useEffect(() => {
+
     const fetchExchangeRate = async () => {
       try {
         const response = await fetch(
           'https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=cop'
         );
         const data = await response.json();
-        const rate = data['matic-network']['cop'];
+        const rate = data['POL-network']['cop'];
         setExchangeRate(rate);
       } catch (error) {
         console.error('Error fetching exchange rate:', error);
@@ -244,18 +301,7 @@ export function Token(props) {
             <Accordion allowMultiple defaultIndex={[0, 1, 2]}>
               {nft?.metadata.description && (
                 <AccordionItem>
-                  {/* You can uncomment this section if you want to display the description */}
-                  {/* <Text>
-                    <AccordionButton>
-                      <Box as="span" flex="1" textAlign="left">
-                        Descripción
-                      </Box>
-                      <AccordionIcon />
-                    </AccordionButton>
-                  </Text>
-                  <AccordionPanel pb={4}>
-                    <Text>{nft.metadata.description}</Text>
-                  </AccordionPanel> */}
+              
                 </AccordionItem>
               )}
 
@@ -298,8 +344,15 @@ export function Token(props) {
 
             {/* Render CreateListing only if the user can create one */}
             {canCreateListing && (
-              <CreateListing tokenId={nft?.id} account={account} />
-            )}
+  <CreateListing 
+    tokenId={nft?.id} 
+    account={account} 
+    onListingCreated={() => {
+      // Force a refresh of the listings
+      refetchAllListings();
+    }} 
+  />
+)}
 
             <Accordion mt="30px" sx={{ container: {} }} defaultIndex={[0, 1]} allowMultiple>
               <AccordionItem>
@@ -341,6 +394,10 @@ export function Token(props) {
                           }}
                         >
                           {listings.map((item, index) => {
+                            debugLog('Rendering listing', {
+                              listingId: item.id.toString(),
+                              index
+                            });
                             const listedByYou =
                               item.creatorAddress.toLowerCase() ===
                               account?.address?.toLowerCase();
@@ -355,10 +412,10 @@ export function Token(props) {
                             const netProfitValuation = 'n/a';
 
                             const textItems = [
-                              `• Precio por Token: ${item.currencyValuePerToken.displayValue} Matic`,
+                              `• Precio por Token: ${item.currencyValuePerToken.displayValue} POL`,
                               type === 'ERC1155' ? `• Cantidad de Tokens: ${quantity}` : null,
                               `• Vendedor: ${listedByYou ? 'Usted' : shortenAddress(item.creatorAddress)}`,
-                              `• Valor total de la oferta: ${totalOfferValue.toFixed(2)} Matic`,
+                              `• Valor total de la oferta: ${totalOfferValue.toFixed(2)} POL`,
                               `• Rentabilidad Neta de la oferta: ${netProfitOffer}`,
                               `• Rentabilidad Bruta de la oferta: ${grossProfitOffer}`,
                               `• Rentabilidad Neta por Avaluó: ${netProfitValuation}`,
@@ -366,7 +423,7 @@ export function Token(props) {
 
                             return (
                               <Card
-                                key={item.id.toString()}
+                              key={`listing-${item.id.toString()}-${Date.now()}`}
                                 minW="250px"
                                 maxW="250px"
                                 boxShadow="xl"
@@ -392,7 +449,7 @@ export function Token(props) {
                                   </Text>
                                   {textItems.map((textItem, idx) => (
                                     <Text
-                                      key={idx}
+                                    key={generateSafeKey('text-item', item.id, idx)}
                                       fontWeight="bold"
                                       color='white'
                                     >
@@ -414,7 +471,7 @@ export function Token(props) {
                         </Flex>
                       </Box>
                       <Text fontWeight="bold" mt={4} mb={2}>
-                        Precio Promedio: {averagePrice} Matic
+                        Precio Promedio: {averagePrice} POL
                       </Text>
                       {averagePriceInCOP && (
                         <Text fontWeight="bold" mb={2}>
@@ -429,10 +486,10 @@ export function Token(props) {
                         >
                           <Thead>
                             <Tr>
-                              <Th>Precio por Token (Matic)</Th>
+                              <Th>Precio por Token (POL)</Th>
                               <Th>Cantidad de Tokens</Th>
                               <Th>Vendedor</Th>
-                              <Th>Valor Total de la Oferta (Matic)</Th>
+                              <Th>Valor Total de la Oferta (POL)</Th>
                               <Th>Rentabilidad Neta de la Oferta</Th>
                               <Th>Rentabilidad Bruta de la Oferta</Th>
                               <Th>Rentabilidad Neta por Avaluó</Th>
@@ -453,11 +510,11 @@ export function Token(props) {
                               const netProfitValuation = "n/a";
 
                               return (
-                                <Tr key={item.id.toString()}>
-                                  <Td>{item.currencyValuePerToken.displayValue} Matic</Td>
+                                <Tr key={`tr-${item.id.toString()}-${Date.now()}`}>
+                                  <Td>{item.currencyValuePerToken.displayValue} POL</Td>
                                   <Td>{type === "ERC1155" ? quantity : 1}</Td>
                                   <Td>{listedByYou ? "Usted" : shortenAddress(item.creatorAddress)}</Td>
-                                  <Td>{totalOfferValue.toFixed(2)} Matic</Td>
+                                  <Td>{totalOfferValue.toFixed(2)} POL</Td>
                                   <Td>{netProfitOffer}</Td>
                                   <Td>{grossProfitOffer}</Td>
                                   <Td>{netProfitValuation}</Td>
