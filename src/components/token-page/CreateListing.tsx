@@ -106,7 +106,7 @@ export function CreateListing(props: Props) {
           <div 
             className="cryptohopper-web-widget" 
             data-id="6" 
-            data-coins="POL-network" 
+            data-coins="matic-network" 
             data-numcoins="5" 
             data-currency="COP" 
             data-currency2="USD"
