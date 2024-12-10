@@ -7,6 +7,10 @@ import { Box } from "@chakra-ui/react";
 export const metadata: Metadata = {
   title: "Sylicon",
   description: "Tokenización y fraccionamiento: transformando el mercado inmobiliario en Colombia",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export default function RootLayout({
